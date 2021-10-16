@@ -7,12 +7,12 @@ use ArrayIterator;
 
 class IgnorePocket implements Pocket
 {
-	function put(...$things) : self
+	function put(...$things) : Pocket
 	{
 		return $this;
 	}
 
-	function clean() : self
+	function clean() : Pocket
 	{
 		return $this;
 	}

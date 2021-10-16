@@ -17,7 +17,7 @@ class ArrayPocket implements Pocket
 		}
 	}
 
-	function put(...$things) : self
+	function put(...$things) : Pocket
 	{
 		foreach ($things as $thing)
 		{
@@ -27,7 +27,7 @@ class ArrayPocket implements Pocket
 		return $this;
 	}
 
-	function clean() : self
+	function clean() : Pocket
 	{
 		$this->things = array();
 		return $this;
