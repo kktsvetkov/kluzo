@@ -128,4 +128,9 @@ class Inspector implements Investigator
 	{
 		yield from $this->pockets;
 	}
+
+	function count() : int
+	{
+		return count($this->pockets);
+	}
 }
