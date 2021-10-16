@@ -136,7 +136,7 @@ class InspectorTest extends TestCase
 
 	/**
 	* @covers Kluzo\Inspector::enableInspector()
-	* @covers Kluzo\Inspector::disbleInspector()
+	* @covers Kluzo\Inspector::disableInspector()
 	* @covers Kluzo\Inspector::log()
 	*/
 	function testEnableInspectorLog()
@@ -161,10 +161,9 @@ class InspectorTest extends TestCase
 		$this->assertEquals($things, [11,11,11,11,11]);
 	}
 
-
 	/**
 	* @covers Kluzo\Inspector::enablePocket()
-	* @covers Kluzo\Inspector::disblePocket()
+	* @covers Kluzo\Inspector::disablePocket()
 	* @covers Kluzo\Inspector::log()
 	*/
 	function testEnablePocketLog()
