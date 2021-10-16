@@ -2,15 +2,15 @@
 
 namespace Kluzo;
 
+use Kluzo\Inspector\InspectorInterface as Investigator;
 use Kluzo\Pocket\PocketInterface as Pocket;
 use Kluzo\Pocket\PocketFactoryInterface as PocketFactory;
 use Kluzo\Pocket\PocketFactory as DefaultPocketFactory;
-use IteratorAggregate;
 use Generator;
 
 use function array_filter;
 
-class Inspector implements IteratorAggregate
+class Inspector implements Investigator
 {
 	protected $pockets = array();
 
@@ -27,19 +27,19 @@ class Inspector implements IteratorAggregate
 		return $this->pockets[ $pocketName ] ?? null;
 	}
 
-	function addPocket(string $pocketName, Pocket $pocketObject) : self
+	function addPocket(string $pocketName, Pocket $pocketObject) : Investigator
 	{
 		$this->pockets[ $pocketName ] = $pocketObject;
 		return $this;
 	}
 
-	function dropPocket(string $pocketName) : self
+	function dropPocket(string $pocketName) : Investigator
 	{
 		unset($this->pockets[ $pocketName ]);
 		return $this;
 	}
 
-	function cleanPocket(string $pocketName) : self
+	function cleanPocket(string $pocketName) : Investigator
 	{
 		if ($pocket = $this->getPocket( $pocketName ))
 		{
@@ -54,7 +54,7 @@ class Inspector implements IteratorAggregate
 	*/
 	protected $emptyPocketFactory;
 
-	function setEmptyPocketFactory(PocketFactory $emptyPocketFactory) : self
+	function setEmptyPocketFactory(PocketFactory $emptyPocketFactory) : Investigator
 	{
 		$this->emptyPocketFactory = $emptyPocketFactory;
 		return $this;
@@ -72,13 +72,13 @@ class Inspector implements IteratorAggregate
 
 	protected $enabled = true;
 
-	function enableInspector() : self
+	function enableInspector() : Investigator
 	{
 		$this->enabled = true;
 		return $this;
 	}
 
-	function disableInspector() : self
+	function disableInspector() : Investigator
 	{
 		$this->enabled = false;
 		return $this;
@@ -91,19 +91,19 @@ class Inspector implements IteratorAggregate
 
 	protected $disabledPockets = array();
 
-	function enablePocket(string $pocketName) : self
+	function enablePocket(string $pocketName) : Investigator
 	{
 		unset($this->disabledPockets[ $pocketName ]);
 		return $this;
 	}
 
-	function disablePocket(string $pocketName) : self
+	function disablePocket(string $pocketName) : Investigator
 	{
 		$this->disabledPockets[ $pocketName ] = true;
 		return $this;
 	}
 
-	function log(string $pocketName, ...$things) : self
+	function log(string $pocketName, ...$things) : Investigator
 	{
 		if (!$this->enabled)
 		{
