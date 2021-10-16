@@ -1,3 +1,6 @@
 composer.lock
 vendor
 .phpunit.result.cache
+
+src/.*
+src/*/.*
