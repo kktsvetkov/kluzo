@@ -23,5 +23,5 @@ interface InspectorInterface extends IteratorAggregate, Countable
 	function disablePocket(string $pocketName) : self;
 
 	function log(string $pocketName, ...$things) : self;
-
+	function display();
 }

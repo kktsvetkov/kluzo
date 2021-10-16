@@ -2,10 +2,13 @@
 
 namespace Kluzo;
 
+use Kluzo\Disguise\DisguiseInterface as Disguise;
+use Kluzo\Disguise\LegacyLayout as DefaultDisguise;
 use Kluzo\Inspector\InspectorInterface as Investigator;
 use Kluzo\Pocket\PocketInterface as Pocket;
 use Kluzo\Pocket\PocketFactoryInterface as PocketFactory;
 use Kluzo\Pocket\PocketFactory as DefaultPocketFactory;
+use Kluzo\Kit\HTTP as HttpKit;
 use Generator;
 
 use function array_filter;
@@ -122,6 +125,35 @@ class Inspector implements Investigator
 
 		$pocket->put(...$things);
 		return $this;
+	}
+
+	/**
+	* @var Kluzo\Disguise\DisguiseInterface
+	*/
+	protected Disguise $disguise;
+
+	function setDisguise(Disguise $disguise) : Investigator
+	{
+		$this->disguise = $disguise;
+		return $this;
+	}
+
+	function getDisguise() : Disguise
+	{
+		return $this->disguise ?? (
+			$this->disguise = new DefaultDisguise
+			);
+	}
+
+	function display()
+	{
+		if (HttpKit::isOutputHTML())
+		{
+			$this->getDisguise()->display( $this );
+			return true;
+		}
+
+		return false;
 	}
 
 	function getIterator() : Generator
