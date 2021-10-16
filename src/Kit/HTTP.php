@@ -7,7 +7,6 @@ use function preg_match;
 
 class HTTP
 {
-
 	/**
 	* If the content-type of the current page is not HTML,
 	* then perhaps it is not safe to introduce the debug dump
@@ -17,7 +16,12 @@ class HTTP
 	*/
 	static function isOutputHTML(array $headers = null) : bool
 	{
-		$headers = $headers ?? headers_list();
+		$headers = $headers ?: headers_list();
+		if (!$headers)
+		{
+			return true;
+		}
+
 		foreach ($headers as $header)
 		{
 			if (preg_match('~^content\-type\:\s*text/html~Uis', $header))
