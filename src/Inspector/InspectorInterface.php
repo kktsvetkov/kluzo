@@ -3,10 +3,9 @@
 namespace Kluzo\Inspector;
 
 use Kluzo\Pocket\PocketInterface as Pocket;
-use Countable;
 use IteratorAggregate;
 
-interface InspectorInterface extends IteratorAggregate, Countable
+interface InspectorInterface extends IteratorAggregate
 {
 	function getPocket(string $pocketName) : ?Pocket;
 	function addPocket(string $pocketName, Pocket $pocketObject) : self;
