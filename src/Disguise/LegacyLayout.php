@@ -2,11 +2,12 @@
 
 namespace Kluzo\Disguise;
 
-use Kluzo\Inspector;
 use Kluzo\Disguise\DisguiseInterface as Disguise;
 use Kluzo\Disguise\StandardDisguiseInterface as StandardDisguise;
 use Kluzo\Disguise\StandardDisguiseTrait;
+
 use Kluzo\Pocket\PocketInterface as Pocket;
+use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 use Countable;
 
 use function htmlentities;
@@ -22,7 +23,7 @@ class LegacyLayout implements StandardDisguise
 {
 	use StandardDisguiseTrait;
 
-	function openDisplay(Inspector $inspector) : Disguise
+	function openDisplay(PocketAggregate $pocketAggregate) : Disguise
 	{
 		echo '<div class="kluzo-debug-bar">';
 
@@ -36,7 +37,7 @@ class LegacyLayout implements StandardDisguise
 			'</span>';
 
 		echo '<div class="tabs">';
-		foreach ($inspector as $pocketName => $pocket)
+		foreach ($pocketAggregate as $pocketName => $pocket)
 		{
 			$pocketTab = htmlentities($pocketName);
 
@@ -57,7 +58,7 @@ class LegacyLayout implements StandardDisguise
 		return $this;
 	}
 
-	function closeDisplay(Inspector $inspector) : Disguise
+	function closeDisplay(PocketAggregate $pocketAggregate) : Disguise
 	{
 		echo '</div>';
 		return $this;
@@ -128,9 +129,9 @@ class LegacyLayout implements StandardDisguise
 			);
 	}
 
-	function introduceJavascript(Inspector $inspector) : Disguise
+	function introduceJavascript(PocketAggregate $pocketAggregate) : Disguise
 	{
-		$pockets = iterator_to_array( $inspector );
+		$pockets = iterator_to_array( $pocketAggregate );
 
 		echo '<script type="text/javascript">',
 		'function debug_select(el)',
@@ -163,7 +164,7 @@ class LegacyLayout implements StandardDisguise
 		return $this;
 	}
 
-	function introduceCSS(Inspector $inspector) : Disguise
+	function introduceCSS(PocketAggregate $pocketAggregate) : Disguise
 	{
 		echo '<style>',
 		'.kluzo-debug-bar {',
