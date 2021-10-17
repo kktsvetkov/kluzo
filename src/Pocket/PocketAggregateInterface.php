@@ -14,4 +14,5 @@ interface PocketAggregateInterface Extends IteratorAggregate
 
 	function blockPocket(string $pocketName) : self;
 	function unblockPocket(string $pocketName) : self;
+	function isBlocked(string $pocketName) : bool;
 }

@@ -80,9 +80,14 @@ class PocketAggregate implements Aggregate
 		return $this;
 	}
 
+	function isBlocked(string $pocketName) : bool
+	{
+		return !empty($this->blockedPockets[ $pocketName ]);
+	}
+
 	function getPocket(string $pocketName) : ?Pocket
 	{
-		return (!empty($this->blockedPockets[ $pocketName ]))
+		return (!$this->isBlocked( $pocketName ))
 			? ($this->pockets[ $pocketName ] ?? null)
 			: null;
 	}
