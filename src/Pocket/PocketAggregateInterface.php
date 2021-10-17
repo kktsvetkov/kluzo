@@ -12,6 +12,6 @@ interface PocketAggregateInterface Extends IteratorAggregate
 	function dropPocket(string $pocketName) : self;
 	function cleanPocket(string $pocketName) : self;
 
-	function enablePocket(string $pocketName) : self;
-	function disablePocket(string $pocketName) : self;
+	function blockPocket(string $pocketName) : self;
+	function unblockPocket(string $pocketName) : self;
 }
