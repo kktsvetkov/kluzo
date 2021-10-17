@@ -2,9 +2,9 @@
 
 namespace Kluzo\Disguise;
 
-use Kluzo\Inspector;
+use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 
 interface DisguiseInterface
 {
-	function display(Inspector $inspector);
+	function display(PocketAggregate $aggregate);
 }
