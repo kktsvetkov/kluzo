@@ -24,8 +24,8 @@ final class ChiefInspector
 		'ison' => 'isEnabled',
 		'enable' => 'enableInspector',
 		'disable' => 'disableInspector',
-		'on' => 'enablePocket',
-		'off' => 'disablePocket',
+		'on' => 'unblockPocket',
+		'off' => 'blockPocket',
 		'clear' => 'cleanPocket',
 	);
 
