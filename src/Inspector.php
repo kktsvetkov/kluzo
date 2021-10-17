@@ -55,6 +55,12 @@ class Inspector implements Investigator
 		return $this;
 	}
 
+	function cleanPocket(string $pocketName) : Investigator
+	{
+		$this->pocketAggregate->cleanPocket( $pocketName );
+		return $this;
+	}
+
 	function log(string $pocketName, ...$things) : Investigator
 	{
 		if ($this->enabled)
