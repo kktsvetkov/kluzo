@@ -87,9 +87,14 @@ class PocketAggregate implements Aggregate
 
 	function getPocket(string $pocketName) : ?Pocket
 	{
-		return (!$this->isBlocked( $pocketName ))
-			? ($this->pockets[ $pocketName ] ?? null)
-			: null;
+		if ($this->isBlocked( $pocketName ))
+		{
+			return null;
+		}
+
+		return $this->pockets[ $pocketName ] ?? (
+			$this->pockets[ $pocketName ] = $this->createEmptyPocket()
+			);
 	}
 
 	function getIterator() : Generator
