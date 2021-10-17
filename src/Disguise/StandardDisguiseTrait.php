@@ -2,31 +2,31 @@
 
 namespace Kluzo\Disguise;
 
-use Kluzo\Inspector;
 use Kluzo\Disguise\DisguiseInterface as Disguise;
 use Kluzo\Pocket\SuggestedFormatInterface as PocketWithSuggestedFormat;
+use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 
 trait StandardDisguiseTrait
 {
-	function display(Inspector $inspector)
+	function display(PocketAggregate $pocketAggregate)
 	{
 		static $introduced = false;
 		if (!$introduced)
 		{
-			$this->introduceJavascript( $inspector );
-			$this->introduceCSS( $inspector );
+			$this->introduceJavascript( $pocketAggregate );
+			$this->introduceCSS( $pocketAggregate );
 
 			$introduced = true;
 		}
 
-		$this->openDisplay( $inspector );
-		$this->displayPockets( $inspector );
-		$this->closeDisplay( $inspector );
+		$this->openDisplay( $pocketAggregate );
+		$this->displayPockets( $pocketAggregate );
+		$this->closeDisplay( $pocketAggregate );
 	}
 
-	function displayPockets(Inspector $inspector) : Disguise
+	function displayPockets(PocketAggregate $pocketAggregate) : Disguise
 	{
-		foreach ($inspector as $pocketName => $pocket)
+		foreach ($pocketAggregate as $pocketName => $pocket)
 		{
 			$formats = [$pocketName];
 			if ($pocket instanceOf PocketWithSuggestedFormat)
