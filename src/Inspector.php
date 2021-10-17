@@ -6,71 +6,22 @@ use Kluzo\Disguise\DisguiseInterface as Disguise;
 use Kluzo\Disguise\LegacyLayout as DefaultDisguise;
 use Kluzo\Inspector\InspectorInterface as Investigator;
 use Kluzo\Pocket\PocketInterface as Pocket;
-use Kluzo\Pocket\PocketFactoryInterface as PocketFactory;
-use Kluzo\Pocket\PocketFactory as DefaultPocketFactory;
+use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
+use Kluzo\Pocket\PocketAggregate as DefaultPocketAggregate;
 use Kluzo\Kit\HTTP as HttpKit;
-use Generator;
-
-use function array_filter;
 
 class Inspector implements Investigator
 {
-	protected $pockets = array();
+	protected $pocketAggregate;
 
-	function __construct(array $pockets = [])
+	function __construct(PocketAggregate $pocketAggregate = null)
 	{
-		$this->pockets = array_filter($pockets, function($pocket)
-		{
-			return ($pocket instanceOf Pocket);
-		});
+		$this->pocketAggregate = $pocketAggregate ?? new DefaultPocketAggregate;
 	}
 
-	function getPocket(string $pocketName) : ?Pocket
+	function getPockets() : PocketAggregate
 	{
-		return $this->pockets[ $pocketName ] ?? null;
-	}
-
-	function addPocket(string $pocketName, Pocket $pocketObject) : Investigator
-	{
-		$this->pockets[ $pocketName ] = $pocketObject;
-		return $this;
-	}
-
-	function dropPocket(string $pocketName) : Investigator
-	{
-		unset($this->pockets[ $pocketName ]);
-		return $this;
-	}
-
-	function cleanPocket(string $pocketName) : Investigator
-	{
-		if ($pocket = $this->getPocket( $pocketName ))
-		{
-			$pocket->clean();
-		}
-
-		return $this;
-	}
-
-	/**
-	* @var Kluzo\Pocket\PocketFactoryInterface
-	*/
-	protected $emptyPocketFactory;
-
-	function setEmptyPocketFactory(PocketFactory $emptyPocketFactory) : Investigator
-	{
-		$this->emptyPocketFactory = $emptyPocketFactory;
-		return $this;
-	}
-
-	function createEmptyPocket() : Pocket
-	{
-		if (!$this->emptyPocketFactory)
-		{
-			$this->emptyPocketFactory = DefaultPocketFactory::withIgnorePocket();
-		}
-
-		return $this->emptyPocketFactory->createPocket();
+		return $this->pocketAggregate;
 	}
 
 	protected $enabled = true;
@@ -92,38 +43,28 @@ class Inspector implements Investigator
 		return $this->enabled;
 	}
 
-	protected $disabledPockets = array();
-
-	function enablePocket(string $pocketName) : Investigator
+	function unblockPocket(string $pocketName) : Investigator
 	{
-		unset($this->disabledPockets[ $pocketName ]);
+		$this->pocketAggregate->unblockPocket( $pocketName );
 		return $this;
 	}
 
-	function disablePocket(string $pocketName) : Investigator
+	function blockPocket(string $pocketName) : Investigator
 	{
-		$this->disabledPockets[ $pocketName ] = true;
+		$this->pocketAggregate->unblockPocket( $pocketName );
 		return $this;
 	}
 
 	function log(string $pocketName, ...$things) : Investigator
 	{
-		if (!$this->enabled)
+		if ($this->enabled)
 		{
-			return $this;
+			if ($pocket = $this->pocketAggregate->getPocket( $pocketName ))
+			{
+				$pocket->put(...$things);
+			}
 		}
 
-		if ($this->disabledPockets[ $pocketName ] ?? null)
-		{
-			return $this;
-		}
-
-		if (!$pocket = $this->pockets[ $pocketName ] ?? null)
-		{
-			$pocket = $this->pockets[ $pocketName ] = $this->createEmptyPocket();
-		}
-
-		$pocket->put(...$things);
 		return $this;
 	}
 
@@ -149,15 +90,10 @@ class Inspector implements Investigator
 	{
 		if (HttpKit::isOutputHTML())
 		{
-			$this->getDisguise()->display( $this );
+			$this->getDisguise()->display( $this->pocketAggregate );
 			return true;
 		}
 
 		return false;
-	}
-
-	function getIterator() : Generator
-	{
-		yield from $this->pockets;
 	}
 }
