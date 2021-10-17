@@ -77,7 +77,7 @@ class Inspector implements Investigator
 	/**
 	* @var Kluzo\Disguise\DisguiseInterface
 	*/
-	protected Disguise $disguise;
+	protected $disguise;
 
 	function setDisguise(Disguise $disguise) : Investigator
 	{
