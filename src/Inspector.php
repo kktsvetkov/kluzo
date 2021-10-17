@@ -51,7 +51,7 @@ class Inspector implements Investigator
 
 	function blockPocket(string $pocketName) : Investigator
 	{
-		$this->pocketAggregate->unblockPocket( $pocketName );
+		$this->pocketAggregate->blockPocket( $pocketName );
 		return $this;
 	}
 
