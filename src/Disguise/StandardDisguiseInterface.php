@@ -2,18 +2,18 @@
 
 namespace Kluzo\Disguise;
 
-use Kluzo\Inspector;
 use Kluzo\Disguise\DisguiseInterface as Disguise;
 use Kluzo\Pocket\PocketInterface as Pocket;
+use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 
 interface StandardDisguiseInterface extends Disguise
 {
-	function displayPockets(Inspector $inspector) : Disguise;
+	function displayPockets(PocketAggregate $pocketAggregate) : Disguise;
 	function displayPocket(string $pocketName, Pocket $pocket, array $formats) : Disguise;
 
-	function openDisplay(Inspector $inspector) : Disguise;
-	function closeDisplay(Inspector $inspector) : Disguise;
+	function openDisplay(PocketAggregate $pocketAggregate) : Disguise;
+	function closeDisplay(PocketAggregate $pocketAggregate) : Disguise;
 
-	function introduceJavascript(Inspector $inspector) : Disguise;
-	function introduceCSS(Inspector $inspector) : Disguise;
+	function introduceJavascript(PocketAggregate $pocketAggregate) : Disguise;
+	function introduceCSS(PocketAggregate $pocketAggregate) : Disguise;
 }
