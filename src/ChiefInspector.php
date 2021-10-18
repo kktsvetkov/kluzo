@@ -38,4 +38,9 @@ final class ChiefInspector
 
 		return self::getInspector()->$method(...$args);
 	}
+
+	static function trace(string $pocketName, ...$things)
+	{
+		return self::getInspector()->trace($pocketName, ...$things);
+	}
 }

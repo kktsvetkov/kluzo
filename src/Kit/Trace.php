@@ -18,7 +18,7 @@ class Trace
 		$trace = '';
 		foreach ($backtrace as $i => $stackFrame)
 		{
-			$trace .= "\n" . sprintf('#%02d ', $i++)
+			$trace .= sprintf('#%02d ', $i++)
 				. (!empty($stackFrame['class'])
 					? "{$stackFrame['class']}{$stackFrame['type']}"
 					: '')
@@ -28,6 +28,8 @@ class Trace
 			{
 				$trace .= " at {$stackFrame['file']}:{$stackFrame['line']}";
 			}
+
+			$trace .= "\n";
 		}
 
 		return $trace;

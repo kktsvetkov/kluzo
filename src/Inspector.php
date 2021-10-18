@@ -9,6 +9,7 @@ use Kluzo\Pocket\PocketInterface as Pocket;
 use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 use Kluzo\Pocket\PocketAggregate as DefaultPocketAggregate;
 use Kluzo\Kit\HTTP as HttpKit;
+use Kluzo\Kit\Trace as TraceKit;
 
 class Inspector implements Investigator
 {
@@ -72,6 +73,12 @@ class Inspector implements Investigator
 		}
 
 		return $this;
+	}
+
+	function trace(string $pocketName, ...$things) : Investigator
+	{
+		$things[] = TraceKit::getTraceBack();
+		return $this->log($pocketName, ...$things);
 	}
 
 	/**
