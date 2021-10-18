@@ -60,7 +60,7 @@ class PocketAggregate implements Aggregate
 	{
 		if (!$this->emptyPocketFactory)
 		{
-			$this->emptyPocketFactory = DefaultPocketFactory::withIgnorePocket();
+			$this->emptyPocketFactory = DefaultPocketFactory::withArrayPocket();
 		}
 
 		return $this->emptyPocketFactory->createPocket();
