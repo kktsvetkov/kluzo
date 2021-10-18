@@ -5,7 +5,6 @@ namespace Kluzo\Tests;
 use Kluzo\Pocket\PocketAggregate;
 use Kluzo\Pocket\PocketFactory;
 use Kluzo\Pocket\ArrayPocket;
-use Kluzo\Pocket\IgnorePocket;
 
 use PHPUnit\Framework\TestCase;
 

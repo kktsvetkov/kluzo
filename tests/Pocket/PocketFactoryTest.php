@@ -4,7 +4,6 @@ namespace Kluzo\Tests;
 
 use Kluzo\Pocket\PocketFactory;
 use Kluzo\Pocket\ArrayPocket;
-use Kluzo\Pocket\IgnorePocket;
 
 use PHPUnit\Framework\TestCase;
 
@@ -29,21 +28,6 @@ class PocketFactoryTest extends TestCase
 		$things = iterator_to_array($pocket);
 		$this->assertEquals($things, [11,22,33,44]);
 	}
-
-	/**
-	* @covers Kluzo\Pocket\PocketFactory::__construct()
-	* @covers Kluzo\Pocket\PocketFactory::createPocket()
-	* @covers Kluzo\Pocket\PocketFactory::withIgnorePocket()
-	*/
-	function testWithIgnorePocket()
-	{
-		$factory = PocketFactory::withIgnorePocket();
-		$this->assertInstanceOf(PocketFactory::class, $factory);
-
-		$pocket = $factory->createPocket();
-		$this->assertInstanceOf(IgnorePocket::class, $pocket);
-	}
-
 
 	/**
 	* @covers Kluzo\Pocket\PocketFactory::__construct()

@@ -5,7 +5,6 @@ namespace Kluzo\Pocket;
 use Kluzo\Pocket\PocketInterface as Pocket;
 use Kluzo\Pocket\PocketFactoryInterface;
 use Kluzo\Pocket\ArrayPocket;
-use Kluzo\Pocket\IgnorePocket;
 
 class PocketFactory implements PocketFactoryInterface
 {
@@ -20,14 +19,6 @@ class PocketFactory implements PocketFactoryInterface
 	{
 		$callback = $this->pocketCallback;
 		return $callback();
-	}
-
-	static function withIgnorePocket() : self
-	{
-		return new self(function()
-		{
-			return new IgnorePocket;
-		});
 	}
 
 	static function withArrayPocket() : self
