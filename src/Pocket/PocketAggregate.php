@@ -15,12 +15,16 @@ class PocketAggregate implements Aggregate
 {
 	protected $pockets = array();
 
-	function __construct(array $pockets = [])
+	function __construct(array $pockets = [], PocketFactory $emptyPocketFactory = null)
 	{
 		$this->pockets = array_filter($pockets, function($pocket)
 		{
 			return ($pocket instanceOf Pocket);
 		});
+
+		$this->setEmptyPocketFactory(
+			$emptyPocketFactory ?? DefaultPocketFactory::withArrayPocket()
+		);
 	}
 
 	function addPocket(string $pocketName, Pocket $pocketObject) : Aggregate
@@ -58,11 +62,6 @@ class PocketAggregate implements Aggregate
 
 	function createEmptyPocket() : Pocket
 	{
-		if (!$this->emptyPocketFactory)
-		{
-			$this->emptyPocketFactory = DefaultPocketFactory::withArrayPocket();
-		}
-
 		return $this->emptyPocketFactory->createPocket();
 	}
 
