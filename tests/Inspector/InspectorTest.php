@@ -2,7 +2,7 @@
 
 namespace Kluzo\Tests;
 
-use Kluzo\Inspector\LieutenantInspector;
+use Kluzo\Inspector\Inspector;
 
 use Kluzo\Pocket\ArrayPocket;
 use Kluzo\Pocket\PocketAggregate;
@@ -12,11 +12,11 @@ use PHPUnit\Framework\TestCase;
 
 use function iterator_to_array;
 
-class LieutenantInspectorTest extends TestCase
+class InspectorTest extends TestCase
 {
 	/**
-	* @covers Kluzo\Inspector\LieutenantInspector::__construct()
-	* @covers Kluzo\Inspector\LieutenantInspector::getPockets()
+	* @covers Kluzo\Inspector\Inspector::__construct()
+	* @covers Kluzo\Inspector\Inspector::getPockets()
 	*/
 	function testConstructor()
 	{
@@ -25,28 +25,28 @@ class LieutenantInspectorTest extends TestCase
 			'twelve' => new ArrayPocket(12,12,12,12)
 		]);
 
-		$inspector = new LieutenantInspector($aggregate);
+		$inspector = new Inspector($aggregate);
 		$this->assertEquals($aggregate, $inspector->getPockets());
 	}
 
 	/**
-	* @covers Kluzo\Inspector\LieutenantInspector::__construct()
-	* @covers Kluzo\Inspector\LieutenantInspector::getPockets()
+	* @covers Kluzo\Inspector\Inspector::__construct()
+	* @covers Kluzo\Inspector\Inspector::getPockets()
 	*/
 	function testEmptyConstructor()
 	{
-		$inspector = new LieutenantInspector;
+		$inspector = new Inspector;
 		$this->assertEquals(new PocketAggregate, $empty = $inspector->getPockets());
 		$this->assertInstanceOf(PocketAggregate::class, $empty);
 	}
 
 	/**
-	* @covers Kluzo\Inspector\LieutenantInspector::log()
-	* @covers Kluzo\Inspector\LieutenantInspector::getPockets()
+	* @covers Kluzo\Inspector\Inspector::log()
+	* @covers Kluzo\Inspector\Inspector::getPockets()
 	*/
 	function testEmptyPocketLogging()
 	{
-		$inspector = new LieutenantInspector;
+		$inspector = new Inspector;
 		$inspector->getPockets()->setEmptyPocketFactory(
 			PocketFactory::withArrayPocket()
 			);
@@ -62,13 +62,13 @@ class LieutenantInspectorTest extends TestCase
 	}
 
 	/**
-	* @covers Kluzo\Inspector\LieutenantInspector::enableInspector()
-	* @covers Kluzo\Inspector\LieutenantInspector::disableInspector()
-	* @covers Kluzo\Inspector\LieutenantInspector::isEnabled()
+	* @covers Kluzo\Inspector\Inspector::enableInspector()
+	* @covers Kluzo\Inspector\Inspector::disableInspector()
+	* @covers Kluzo\Inspector\Inspector::isEnabled()
 	*/
 	function testEnableInspector()
 	{
-		$inspector = new LieutenantInspector;
+		$inspector = new Inspector;
 		$inspector->disableInspector();
 		$this->assertFalse($inspector->isEnabled());
 
@@ -77,13 +77,13 @@ class LieutenantInspectorTest extends TestCase
 	}
 
 	/**
-	* @covers Kluzo\Inspector\LieutenantInspector::enableInspector()
-	* @covers Kluzo\Inspector\LieutenantInspector::disableInspector()
-	* @covers Kluzo\Inspector\LieutenantInspector::log()
+	* @covers Kluzo\Inspector\Inspector::enableInspector()
+	* @covers Kluzo\Inspector\Inspector::disableInspector()
+	* @covers Kluzo\Inspector\Inspector::log()
 	*/
 	function testEnableInspectorLog()
 	{
-		$inspector = new LieutenantInspector(
+		$inspector = new Inspector(
 			new PocketAggregate([
 				'eleven' => new ArrayPocket
 			]));
@@ -105,13 +105,13 @@ class LieutenantInspectorTest extends TestCase
 	}
 
 	/**
-	* @covers Kluzo\Inspector\LieutenantInspector::enablePocket()
-	* @covers Kluzo\Inspector\LieutenantInspector::disablePocket()
-	* @covers Kluzo\Inspector\LieutenantInspector::log()
+	* @covers Kluzo\Inspector\Inspector::enablePocket()
+	* @covers Kluzo\Inspector\Inspector::disablePocket()
+	* @covers Kluzo\Inspector\Inspector::log()
 	*/
 	function testEnablePocketLog()
 	{
-		$inspector = new LieutenantInspector(
+		$inspector = new Inspector(
 			new PocketAggregate([
 				'eleven' => new ArrayPocket
 			]));

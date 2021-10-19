@@ -3,7 +3,7 @@
 namespace Kluzo\Inspector;
 
 use Kluzo\Inspector\InspectorInterface as Inspector;
-use Kluzo\Inspector\LieutenantInspector;
+use Kluzo\Inspector\Inspector as DefaultInspector;
 
 use function strtolower;
 
@@ -19,7 +19,7 @@ final class InspectorProxy
 	static function getInspector() : Inspector
 	{
 		return self::$inspector ?? (
-			self::$inspector = new LieutenantInspector
+			self::$inspector = new DefaultInspector
 			);
 	}
 

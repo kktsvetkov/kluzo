@@ -5,7 +5,7 @@ namespace Kluzo\Inspector;
 use Kluzo\Disguise\DisguiseInterface as Disguise;
 use Kluzo\Disguise\LegacyLayout as DefaultDisguise;
 
-use Kluzo\Inspector\InspectorInterface as Inspector;
+use Kluzo\Inspector\InspectorInterface;
 
 use Kluzo\Pocket\PocketInterface as Pocket;
 use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
@@ -13,7 +13,7 @@ use Kluzo\Pocket\PocketAggregate as DefaultPocketAggregate;
 
 use Kluzo\Kit\HTTP as HttpKit;
 
-class LieutenantInspector implements Inspector
+class Inspector implements InspectorInterface
 {
 	protected $pocketAggregate;
 
