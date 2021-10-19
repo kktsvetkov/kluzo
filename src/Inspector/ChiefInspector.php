@@ -1,6 +1,6 @@
 <?php
 
-namespace Kluzo;
+namespace Kluzo\Inspector;
 
 use Kluzo\Inspector\InspectorInterface as Inspector;
 use Kluzo\Inspector\LieutenantInspector;
