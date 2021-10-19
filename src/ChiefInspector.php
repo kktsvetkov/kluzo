@@ -2,7 +2,8 @@
 
 namespace Kluzo;
 
-use Kluzo\Inspector;
+use Kluzo\Inspector\InspectorInterface as Inspector;
+use Kluzo\Inspector\LieutenantInspector;
 
 use function strtolower;
 
@@ -17,7 +18,7 @@ final class ChiefInspector
 
 	static function getInspector() : Inspector
 	{
-		return self::$inspector ?? (self::$inspector = new Inspector);
+		return self::$inspector ?? (self::$inspector = new LieutenantInspector);
 	}
 
 	private const METHOD_ALIAS = array(

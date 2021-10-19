@@ -1,16 +1,19 @@
 <?php
 
-namespace Kluzo;
+namespace Kluzo\Inspector;
 
 use Kluzo\Disguise\DisguiseInterface as Disguise;
 use Kluzo\Disguise\LegacyLayout as DefaultDisguise;
-use Kluzo\Inspector\InspectorInterface as Investigator;
+
+use Kluzo\Inspector\InspectorInterface as Inspector;
+
 use Kluzo\Pocket\PocketInterface as Pocket;
 use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 use Kluzo\Pocket\PocketAggregate as DefaultPocketAggregate;
+
 use Kluzo\Kit\HTTP as HttpKit;
 
-class Inspector implements Investigator
+class LieutenantInspector implements Inspector
 {
 	protected $pocketAggregate;
 
@@ -26,13 +29,13 @@ class Inspector implements Investigator
 
 	protected $enabled = true;
 
-	function enableInspector() : Investigator
+	function enableInspector() : Inspector
 	{
 		$this->enabled = true;
 		return $this;
 	}
 
-	function disableInspector() : Investigator
+	function disableInspector() : Inspector
 	{
 		$this->enabled = false;
 		return $this;
@@ -43,25 +46,25 @@ class Inspector implements Investigator
 		return $this->enabled;
 	}
 
-	function unblockPocket(string $pocketName) : Investigator
+	function unblockPocket(string $pocketName) : Inspector
 	{
 		$this->pocketAggregate->unblockPocket( $pocketName );
 		return $this;
 	}
 
-	function blockPocket(string $pocketName) : Investigator
+	function blockPocket(string $pocketName) : Inspector
 	{
 		$this->pocketAggregate->blockPocket( $pocketName );
 		return $this;
 	}
 
-	function cleanPocket(string $pocketName) : Investigator
+	function cleanPocket(string $pocketName) : Inspector
 	{
 		$this->pocketAggregate->cleanPocket( $pocketName );
 		return $this;
 	}
 
-	function log(string $pocketName, ...$things) : Investigator
+	function log(string $pocketName, ...$things) : Inspector
 	{
 		if ($this->enabled)
 		{
@@ -79,7 +82,7 @@ class Inspector implements Investigator
 	*/
 	protected $disguise;
 
-	function setDisguise(Disguise $disguise) : Investigator
+	function setDisguise(Disguise $disguise) : Inspector
 	{
 		$this->disguise = $disguise;
 		return $this;
