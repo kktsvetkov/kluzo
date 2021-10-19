@@ -27,6 +27,7 @@ class TestimonyTest extends TestCase
 	function testPutMixed()
 	{
 		$clue = new Testimony(11, [22], $object = (object) []);
-		$this->assertEquals(iterator_to_array($clue), [11, [22], $object]);
+		$things = iterator_to_array($clue);
+		$this->assertEquals($things, [11, [22], $object]);
 	}
 }
