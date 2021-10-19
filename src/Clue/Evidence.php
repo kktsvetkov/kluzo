@@ -9,18 +9,14 @@ class Evidence implements Clue
 {
 	protected $callback;
 
-	function __construct(callable $callback)
+	function __construct(callable $evidenceCallback)
 	{
-		$this->callback = $callback;
+		$this->callback = $evidenceCallback;
 	}
 
 	function getIterator() : Generator
 	{
-		if (!$callback = $this->callback)
-		{
-			return [];
-		}
-
-		yield from $callback();
+		$evidenceCallback = $this->callback;
+		yield from $evidenceCallback();
 	}
 }
