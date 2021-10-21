@@ -2,6 +2,7 @@
 
 namespace Kluzo\Inspector;
 
+use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Pocket\PocketInterface as Pocket;
 use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 
@@ -13,6 +14,6 @@ interface InspectorInterface
 	function disableInspector() : self;
 	function isEnabled() : bool;
 
-	function log(string $pocketName, ...$things) : self;
+	function log(string $pocketName, ...$things) : Clue;
 	function display();
 }

@@ -2,6 +2,10 @@
 
 namespace Kluzo\Inspector;
 
+use Kluzo\Clue\ClueInterface as Clue;
+use Kluzo\Clue\Ignore as IgnoreClue;
+use Kluzo\Clue\Testimony as TestimonyClue;
+
 use Kluzo\Disguise\DisguiseInterface as Disguise;
 use Kluzo\Disguise\LegacyLayout as DefaultDisguise;
 
@@ -17,9 +21,12 @@ class Inspector implements InspectorInterface
 {
 	protected $pocketAggregate;
 
-	function __construct(PocketAggregate $pocketAggregate = null)
+	function __construct(
+		PocketAggregate $pocketAggregate = null
+		)
 	{
-		$this->pocketAggregate = $pocketAggregate ?? new DefaultPocketAggregate;
+		$this->pocketAggregate = $pocketAggregate
+			?? new DefaultPocketAggregate;
 	}
 
 	function getPockets() : PocketAggregate
@@ -64,17 +71,20 @@ class Inspector implements InspectorInterface
 		return $this;
 	}
 
-	function log(string $pocketName, ...$things) : Inspector
+	function log(string $pocketName, ...$things) : Clue
 	{
-		if ($this->enabled)
+		if (!$this->enabled)
 		{
-			if ($pocket = $this->pocketAggregate->getPocket( $pocketName ))
-			{
-				$pocket->put(...$things);
-			}
+			return new IgnoreClue;
 		}
 
-		return $this;
+		if (!$pocket = $this->pocketAggregate->getPocket( $pocketName ))
+		{
+			return new IgnoreClue;
+		}
+
+		$pocket->put( $clue = new TestimonyClue(...$things) );
+		return $clue;
 	}
 
 	/**
