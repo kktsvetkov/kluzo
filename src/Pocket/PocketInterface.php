@@ -2,11 +2,12 @@
 
 namespace Kluzo\Pocket;
 
+use Kluzo\Clue\ClueInterface as Clue;
 use IteratorAggregate;
 
 interface PocketInterface extends IteratorAggregate
 {
-	function put(...$things) : self;
+	function put(Clue $clue) : self;
 
 	function clean() : self;
 }

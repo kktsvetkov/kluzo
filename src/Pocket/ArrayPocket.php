@@ -2,39 +2,38 @@
 
 namespace Kluzo\Pocket;
 
+use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Pocket\PocketInterface as Pocket;
 use Generator;
 
+use array_filter;
+
 class ArrayPocket implements Pocket
 {
-	protected $things = array();
+	protected $clues = array();
 
-	function __construct(...$things)
+	function __construct(...$clues)
 	{
-		if ($things)
+		$this->clues = array_filter($clues, function($clue)
 		{
-			$this->put(...$things);
-		}
+			return $clue instanceOf Clue;
+		});
 	}
 
-	function put(...$things) : Pocket
+	function put(Clue $clue) : Pocket
 	{
-		foreach ($things as $thing)
-		{
-			$this->things[] = $thing;
-		}
-
+		$this->clues[] = $clue;
 		return $this;
 	}
 
 	function clean() : Pocket
 	{
-		$this->things = array();
+		$this->clues = array();
 		return $this;
 	}
 
 	function getIterator() : Generator
 	{
-		yield from $this->things;
+		yield from $this->clues;
 	}
 }
