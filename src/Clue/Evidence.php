@@ -3,10 +3,13 @@
 namespace Kluzo\Clue;
 
 use Kluzo\Clue\ClueInterface as Clue;
+use Kluzo\Clue\LabelTrait;
 use Generator;
 
 class Evidence implements Clue
 {
+	use LabelTrait;
+
 	protected $callback;
 
 	function __construct(callable $evidenceCallback)
