@@ -36,4 +36,9 @@ class ArrayPocket implements Pocket
 	{
 		yield from $this->clues;
 	}
+
+	function count() : int
+	{
+		return count($this->clues);
+	}
 }
