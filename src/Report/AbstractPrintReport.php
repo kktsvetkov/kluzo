@@ -24,25 +24,20 @@ abstract class AbstractPrintReport implements CaseReport
 		static $introduced = false;
 		if (!$introduced)
 		{
-			$this->introduceJavascript( $pocketAggregate );
-			$this->introduceCSS( $pocketAggregate );
+			$this->introduceJavascript( $pocketAggregate )
+				->introduceCSS( $pocketAggregate );
 
 			$introduced = true;
 		}
 
 		$this->openDisplay( $pocketAggregate );
-		$this->displayPockets( $pocketAggregate );
-		$this->closeDisplay( $pocketAggregate );
-	}
 
-	protected function displayPockets(PocketAggregate $pocketAggregate) : self
-	{
 		foreach ($pocketAggregate as $pocketName => $pocket)
 		{
 			$this->displayPocket($pocketName, $pocket);
 		}
 
-		return $this;
+		$this->closeDisplay( $pocketAggregate );
 	}
 
 	abstract protected function displayPocket(string $pocketName, Pocket $pocket) : self;
