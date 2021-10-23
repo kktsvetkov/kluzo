@@ -13,11 +13,14 @@ use Kluzo\Report\LegacyLayout as DefaultReport;
 abstract class AbstractInspector
 {
 	protected $pocketAggregate;
+	protected $caseReport;
 
-	function __construct(PocketAggregate $pocketAggregate = null)
+	function __construct(
+		PocketAggregate $pocketAggregate = null,
+		CaseReport $caseReport = null)
 	{
-		$this->pocketAggregate = $pocketAggregate
-			?? new DefaultPocketAggregate;
+		$this->caseReport = $caseReport ?? new DefaultReport;
+		$this->pocketAggregate = $pocketAggregate ?? new DefaultPocketAggregate;
 	}
 
 	function getPockets() : PocketAggregate
@@ -62,30 +65,12 @@ abstract class AbstractInspector
 		return $this;
 	}
 
-	protected $reportCallback;
-
-	function setCreateReportCallback(callable $reportCallback) : self
-	{
-		$this->reportCallback = $reportCallback;
-		return $this;
-	}
-
-	protected function createCaseReport() : CaseReport
-	{
-		if ($reportCallback = $this->reportCallback)
-		{
-			return $reportCallback();
-		}
-
-		return new DefaultReport();
-	}
-
 	protected $caseClosed = false;
 
 	function closeCase()
 	{
 		$this->caseClosed = true;
-		$this->createCaseReport()->sendReport( $this->pocketAggregate );
+		$this->caseReport->sendReport( $this->pocketAggregate );
 	}
 
 	function __destruct()
