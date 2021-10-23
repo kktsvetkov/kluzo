@@ -2,6 +2,7 @@
 
 namespace Kluzo\Report;
 
+use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Pocket\PocketInterface as Pocket;
 use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 use Kluzo\Report\AbstractPrintReport as PrintReport;
@@ -86,41 +87,49 @@ class LegacyLayout extends PrintReport
 				current( $colors ), '">',
 			'<div style="direction: ltr;">';
 
-		$this->formatDisplay($pocket, $formats);
+		foreach ($pocket as $i => $clue)
+		{
+			if ($i > 0)
+			{
+				echo '<hr class="divider" />';
+			}
+
+			$this->displayClue($clue, $formats);
+		}
+
 		echo '</div>', '</pre>';
 
 		return $this;
 	}
 
-	protected function formatDisplay(Pocket $pocket, array $formats)
+	protected function displayClue(Clue $clue, array $formats) : self
 	{
-		foreach ($formats as $format)
+		if ($label = $clue->getLabel())
 		{
-			switch ($format)
-			{
-				// case 'long_list':
-				//
-				// case 'mixed_list':
-				// 	return $this->formatMixedList($pocket);
-
-				case 'array_dump':
-					return $this->formatDefault($pocket);
-			}
+			echo '<strong class="clue-label" ',
+				'style="background: white; color: black;">',
+				$label, '</strong> ';
 		}
 
-		return $this->formatDefault($pocket);
-	}
+		echo '<span class="clue">';
 
-	// protected function formatMixedList(Pocket $pocket)
-	// {
-	// 	var_dump($pocket);
-	// }
+		$clueCount = iterator_count($clue);
+		if ($clueCount > 100)
+		{
+			foreach ($clue as $name => $thing)
+			{
+				$output = print_r([$name => $thing], true);
+				echo htmlentities($output);
+			}
+		} else
+		{
+			$things = iterator_to_array($clue);
+			$output = print_r($things, true);
+			echo htmlentities($output);
+		}
 
-	protected function formatDefault(Pocket $pocket)
-	{
-		echo htmlentities(
-			print_r( iterator_to_array($pocket), true )
-			);
+		echo '</span>';
+		return $this;
 	}
 
 	function introduceJavascript(PocketAggregate $pocketAggregate) : self

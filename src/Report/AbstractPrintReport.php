@@ -2,6 +2,7 @@
 
 namespace Kluzo\Report;
 
+use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Pocket\PocketInterface as Pocket;
 use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 use Kluzo\Report\ReportInterface as CaseReport;
@@ -51,6 +52,7 @@ abstract class AbstractPrintReport implements CaseReport
 	}
 
 	abstract protected function displayPocket(string $pocketName, Pocket $pocket, array $formats) : self;
+	abstract protected function displayClue(Clue $clue, array $formats) : self;
 
 	abstract protected function openDisplay(PocketAggregate $pocketAggregate) : self;
 	abstract protected function closeDisplay(PocketAggregate $pocketAggregate) : self;
