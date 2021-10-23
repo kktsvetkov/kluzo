@@ -10,18 +10,11 @@ use Kluzo\Kit\HTTP as HTTPKit;
 
 abstract class AbstractPrintReport implements CaseReport
 {
-	protected $pocketAggregate;
-
-	function __construct(PocketAggregate $pocketAggregate)
-	{
-		$this->pocketAggregate = $pocketAggregate;
-	}
-
-	function sendReport()
+	function sendReport(PocketAggregate $pocketAggregate)
 	{
 		if (HTTPKit::isOutputHTML())
 		{
-			$this->printReport($this->pocketAggregate);
+			$this->printReport($pocketAggregate);
 		}
 	}
 

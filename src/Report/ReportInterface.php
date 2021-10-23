@@ -6,6 +6,5 @@ use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 
 interface ReportInterface
 {
-	function __construct(PocketAggregate $pocketAggregate);
-	function sendReport();
+	function sendReport(PocketAggregate $pocketAggregate);
 }

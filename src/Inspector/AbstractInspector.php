@@ -70,14 +70,14 @@ abstract class AbstractInspector
 		return $this;
 	}
 
-	protected function createCaseReport(PocketAggregate $pocketAggregate) : CaseReport
+	protected function createCaseReport() : CaseReport
 	{
 		if ($reportCallback = $this->reportCallback)
 		{
-			return $reportCallback( $pockedAggregate );
+			return $reportCallback();
 		}
 
-		return new DefaultReport( $pocketAggregate );
+		return new DefaultReport();
 	}
 
 	protected $caseClosed = false;
@@ -85,7 +85,7 @@ abstract class AbstractInspector
 	function closeCase()
 	{
 		$this->caseClosed = true;
-		$this->createCaseReport( $this->pocketAggregate )->sendReport();
+		$this->createCaseReport()->sendReport( $this->pocketAggregate );
 	}
 
 	function __destruct()
