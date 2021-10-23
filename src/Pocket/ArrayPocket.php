@@ -4,12 +4,15 @@ namespace Kluzo\Pocket;
 
 use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Pocket\PocketInterface as Pocket;
+use Kluzo\Pocket\PocketInstructionTrait;
 use Generator;
 
 use array_filter;
 
 class ArrayPocket implements Pocket
 {
+	use PocketInstructionTrait;
+	
 	protected $clues = array();
 
 	function __construct(...$clues)

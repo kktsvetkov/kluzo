@@ -36,14 +36,13 @@ class LegacyLayout extends PrintReport
 		foreach ($pocketAggregate as $pocketName => $pocket)
 		{
 			$pocketTab = htmlentities($pocketName);
-
 			$cluesCount = $pocket->count();
 
 			echo ' <a onClick="return debug_select(this);" id="tab-',
 				$pocketTab, '" href="#debug-',
 				$pocketTab, '">',
 				$pocketTab,
-				((2 <= $cluesCount) ? " ({$cluesCount})" : ''),
+				((!$pocket->is('no.count')) ? " ({$cluesCount})" : ''),
 				'</a>';
 		}
 
@@ -94,6 +93,7 @@ class LegacyLayout extends PrintReport
 				$this->pickTabColor(), '">',
 			'<div style="direction: ltr;">';
 
+		$showIndex = !$pocket->is('no.index');
 		foreach ($pocket as $i => $clue)
 		{
 			// put dividers between clues
@@ -103,6 +103,15 @@ class LegacyLayout extends PrintReport
 				echo '<br />',
 					'<hr style="opacity:20%" />',
 					'<br />';
+			}
+
+			// show index
+			//
+			if ($showIndex)
+			{
+				echo '<small class="clue-index">',
+					sprintf('%06d.', 1 + $i),
+					'</small> ';
 			}
 
 			$this->displayClue($clue);
@@ -269,6 +278,10 @@ class LegacyLayout extends PrintReport
 		'.kluzo-debug-bar > pre .clue-label {',
 			'background: white;',
 			'color: black;',
+		'}',
+		'.kluzo-debug-bar > pre small.clue-index {',
+			'opacity: 50%;',
+			'color: khaki;',
 		'}',
 		'</style>';
 
