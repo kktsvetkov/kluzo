@@ -2,12 +2,12 @@
 
 namespace Kluzo\Tests;
 
-use Kluzo\Inspector\Inspector;
-
+use Kluzo\Clue\Testimony as TestimonyClue;
+use Kluzo\Inspector\DetectiveInspector as Inspector;
 use Kluzo\Pocket\ArrayPocket;
 use Kluzo\Pocket\PocketAggregate;
 use Kluzo\Pocket\PocketFactory;
-
+use Kluzo\Report\NonVocal as NonVocalReport;
 use PHPUnit\Framework\TestCase;
 
 use function iterator_to_array;
@@ -15,8 +15,8 @@ use function iterator_to_array;
 class InspectorTest extends TestCase
 {
 	/**
-	* @covers Kluzo\Inspector\Inspector::__construct()
-	* @covers Kluzo\Inspector\Inspector::getPockets()
+	* @covers Kluzo\Inspector\DetectiveInspector::__construct()
+	* @covers Kluzo\Inspector\DetectiveInspector::getPockets()
 	*/
 	function testConstructor()
 	{
@@ -25,31 +25,28 @@ class InspectorTest extends TestCase
 			'twelve' => new ArrayPocket(12,12,12,12)
 		]);
 
-		$inspector = new Inspector($aggregate);
+		$inspector = new Inspector($aggregate, new NonVocalReport);
 		$this->assertEquals($aggregate, $inspector->getPockets());
 	}
 
 	/**
-	* @covers Kluzo\Inspector\Inspector::__construct()
-	* @covers Kluzo\Inspector\Inspector::getPockets()
+	* @covers Kluzo\Inspector\DetectiveInspector::__construct()
+	* @covers Kluzo\Inspector\DetectiveInspector::getPockets()
 	*/
 	function testEmptyConstructor()
 	{
-		$inspector = new Inspector;
+		$inspector = new Inspector(null, new NonVocalReport);
 		$this->assertEquals(new PocketAggregate, $empty = $inspector->getPockets());
 		$this->assertInstanceOf(PocketAggregate::class, $empty);
 	}
 
 	/**
-	* @covers Kluzo\Inspector\Inspector::log()
-	* @covers Kluzo\Inspector\Inspector::getPockets()
+	* @covers Kluzo\Inspector\DetectiveInspector::log()
+	* @covers Kluzo\Inspector\DetectiveInspector::getPockets()
 	*/
 	function testEmptyPocketLogging()
 	{
-		$inspector = new Inspector;
-		$inspector->getPockets()->setEmptyPocketFactory(
-			PocketFactory::withArrayPocket()
-			);
+		$inspector = new Inspector(null, new NonVocalReport);
 
 		$inspector->log('eleven', 11, 11);
 		$this->assertInstanceOf(
@@ -57,78 +54,78 @@ class InspectorTest extends TestCase
 			$pocket = $inspector->getPockets()->getPocket('eleven')
 			);
 
-		$things = iterator_to_array($pocket);
-		$this->assertEquals($things, [11,11]);
+		$clues = iterator_to_array($pocket);
+		$this->assertEquals($clues, [new TestimonyClue(11,11)]);
 	}
 
 	/**
-	* @covers Kluzo\Inspector\Inspector::enableInspector()
-	* @covers Kluzo\Inspector\Inspector::disableInspector()
-	* @covers Kluzo\Inspector\Inspector::isEnabled()
+	* @covers Kluzo\Inspector\DetectiveInspector::resumeCase()
+	* @covers Kluzo\Inspector\DetectiveInspector::suspendCase()
+	* @covers Kluzo\Inspector\DetectiveInspector::isCaseSuspended()
 	*/
 	function testEnableInspector()
 	{
-		$inspector = new Inspector;
-		$inspector->disableInspector();
-		$this->assertFalse($inspector->isEnabled());
+		$inspector = new Inspector(null, new NonVocalReport);
+		$inspector->suspendCase();
+		$this->assertTrue($inspector->isCaseSuspended());
 
-		$inspector->enableInspector();
-		$this->assertTrue($inspector->isEnabled());
+		$inspector->resumeCase();
+		$this->assertFalse($inspector->isCaseSuspended());
 	}
 
 	/**
-	* @covers Kluzo\Inspector\Inspector::enableInspector()
-	* @covers Kluzo\Inspector\Inspector::disableInspector()
-	* @covers Kluzo\Inspector\Inspector::log()
+	* @covers Kluzo\Inspector\DetectiveInspector::resumeCase()
+	* @covers Kluzo\Inspector\DetectiveInspector::suspendCase()
+	* @covers Kluzo\Inspector\DetectiveInspector::log()
 	*/
 	function testEnableInspectorLog()
 	{
 		$inspector = new Inspector(
 			new PocketAggregate([
 				'eleven' => new ArrayPocket
-			]));
+			]), new NonVocalReport);
 
 		$inspector->log('eleven', 11, 11);
 		$pocket = $inspector->getPockets()->getPocket('eleven');
 		$things = iterator_to_array( $pocket );
-		$this->assertEquals($things, [11,11]);
+		$this->assertEquals($things, [new TestimonyClue(11,11)]);
 
-		$inspector->disableInspector();
+		$inspector->suspendCase();
 		$inspector->log('eleven', 11, 11, 11);
 		$things = iterator_to_array( $pocket );
-		$this->assertEquals($things, [11,11]);
+		$this->assertEquals($things, [new TestimonyClue(11,11)]);
 
-		$inspector->enableInspector();
+		$inspector->resumeCase();
 		$inspector->log('eleven', 11, 11, 11);
 		$things = iterator_to_array( $pocket );
-		$this->assertEquals($things, [11,11,11,11,11]);
+		$this->assertEquals($things, [new TestimonyClue(11,11), new TestimonyClue(11,11,11)]);
 	}
 
 	/**
-	* @covers Kluzo\Inspector\Inspector::enablePocket()
-	* @covers Kluzo\Inspector\Inspector::disablePocket()
-	* @covers Kluzo\Inspector\Inspector::log()
+	* @covers Kluzo\Inspector\DetectiveInspector::enablePocket()
+	* @covers Kluzo\Inspector\DetectiveInspector::disablePocket()
+	* @covers Kluzo\Inspector\DetectiveInspector::log()
 	*/
 	function testEnablePocketLog()
 	{
 		$inspector = new Inspector(
 			new PocketAggregate([
 				'eleven' => new ArrayPocket
-			]));
+			]), new NonVocalReport);
 
 		$inspector->log('eleven', 11, 11);
 		$pocket = $inspector->getPockets()->getPocket('eleven');
 		$things = iterator_to_array( $pocket );
-		$this->assertEquals($things, [11,11]);
+		$this->assertEquals($things, [new TestimonyClue(11,11)]);
 
 		$inspector->blockPocket('eleven');
 		$inspector->log('eleven', 11, 11, 11);
 		$things = iterator_to_array( $pocket );
-		$this->assertEquals($things, [11,11]);
+		$this->assertEquals($things, [new TestimonyClue(11,11)]);
 
 		$inspector->unblockPocket('eleven');
 		$inspector->log('eleven', 11, 11, 11);
 		$things = iterator_to_array( $pocket );
-		$this->assertEquals($things, [11,11,11,11,11]);
+		$this->assertEquals($things, [new TestimonyClue(11,11), new TestimonyClue(11,11,11)]);
 	}
 }
