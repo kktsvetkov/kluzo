@@ -2,9 +2,10 @@
 
 namespace Kluzo\Tests;
 
+use Kluzo\Clue\ClueInterface as Clue;
+use Kluzo\Clue\Testimony as TestimonyClue;
 use Kluzo\Pocket\PocketFactory;
 use Kluzo\Pocket\ArrayPocket;
-
 use PHPUnit\Framework\TestCase;
 
 use function iterator_to_array;
@@ -19,14 +20,14 @@ class PocketFactoryTest extends TestCase
 	{
 		$factory = new PocketFactory(function()
 		{
-			return new ArrayPocket(11,22,33,44);
+			return new ArrayPocket(new TestimonyClue(11,22,33,44));
 		});
 
 		$pocket = $factory->createPocket();
 		$this->assertInstanceOf(ArrayPocket::class, $pocket);
 
 		$things = iterator_to_array($pocket);
-		$this->assertEquals($things, [11,22,33,44]);
+		$this->assertEquals($things, [new TestimonyClue(11,22,33,44)]);
 	}
 
 	/**

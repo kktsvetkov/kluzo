@@ -2,6 +2,8 @@
 
 namespace Kluzo\Tests;
 
+use Kluzo\Clue\ClueInterface as Clue;
+use Kluzo\Clue\Testimony as TestimonyClue;
 use Kluzo\Pocket\ArrayPocket;
 use PHPUnit\Framework\TestCase;
 
@@ -16,9 +18,11 @@ class ArrayPocketTest extends TestCase
 	*/
 	function testConstructor()
 	{
-		$pocket = new ArrayPocket(1,2,3,4);
-		$things = iterator_to_array($pocket);
-		$this->assertEquals($things, [1,2,3,4]);
+		$pocket = new ArrayPocket(
+			$clue = new TestimonyClue(1,2,3,4)
+			);
+		$clues = iterator_to_array($pocket);
+		$this->assertEquals($clues, [$clue]);
 	}
 
 	/**
@@ -28,14 +32,14 @@ class ArrayPocketTest extends TestCase
 	function testPut()
 	{
 		$pocket = new ArrayPocket;
-		$pocket->put(11);
-		$this->assertEquals(iterator_to_array($pocket), [11]);
+		$pocket->put($clue = new TestimonyClue(11));
+		$this->assertEquals(iterator_to_array($pocket), [$clue]);
 
-		$pocket->put(22);
-		$this->assertEquals(iterator_to_array($pocket), [11, 22]);
+		$pocket->put($clue2 = new TestimonyClue(22));
+		$this->assertEquals(iterator_to_array($pocket), [$clue, $clue2]);
 
-		$pocket->put(33, 44);
-		$this->assertEquals(iterator_to_array($pocket), [11, 22, 33, 44]);
+		$pocket->put($clue3 = new TestimonyClue(33, 44));
+		$this->assertEquals(iterator_to_array($pocket), [$clue, $clue2, $clue3]);
 	}
 
 	/**
@@ -45,11 +49,11 @@ class ArrayPocketTest extends TestCase
 	function testPutMixed()
 	{
 		$pocket = new ArrayPocket;
-		$pocket->put(11);
-		$this->assertEquals(iterator_to_array($pocket), [11]);
+		$pocket->put($clue = new TestimonyClue(11));
+		$this->assertEquals(iterator_to_array($pocket), [$clue]);
 
-		$pocket->put([], $object = (object) []);
-		$this->assertEquals(iterator_to_array($pocket), [11, [], $object]);
+		$pocket->put($clue2 = new TestimonyClue([], $object = (object) []));
+		$this->assertEquals(iterator_to_array($pocket), [$clue, $clue2]);
 	}
 
 	/**
@@ -60,8 +64,8 @@ class ArrayPocketTest extends TestCase
 	function testClean()
 	{
 		$pocket = new ArrayPocket;
-		$pocket->put(11);
-		$this->assertEquals(iterator_to_array($pocket), [11]);
+		$pocket->put($clue = new TestimonyClue(11));
+		$this->assertEquals(iterator_to_array($pocket), [$clue]);
 
 		$pocket->clean();
 		$this->assertEquals(iterator_to_array($pocket), []);

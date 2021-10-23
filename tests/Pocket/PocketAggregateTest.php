@@ -2,6 +2,8 @@
 
 namespace Kluzo\Tests;
 
+use Kluzo\Clue\ClueInterface as Clue;
+use Kluzo\Clue\Testimony as TestimonyClue;
 use Kluzo\Pocket\PocketAggregate;
 use Kluzo\Pocket\PocketFactory;
 use Kluzo\Pocket\ArrayPocket;
@@ -20,8 +22,11 @@ class PocketAggregateTest extends TestCase
 	function testConstructor()
 	{
 		$aggregate = new PocketAggregate($source = [
-			'eleven' => $eleven = new ArrayPocket(11,11,11),
-			'twelve' => new ArrayPocket(12,12,12,12)
+			'eleven' => $eleven = new ArrayPocket(
+				new TestimonyClue(11,11,11)),
+			'twelve' => new ArrayPocket(
+				new TestimonyClue(12,12,12,12)
+				)
 			]);
 
 		$pockets = iterator_to_array($aggregate);
@@ -40,7 +45,7 @@ class PocketAggregateTest extends TestCase
 	{
 		$aggregate = new PocketAggregate;
 
-		$aggregate->addPocket('eleven', $eleven = new ArrayPocket(11,11));
+		$aggregate->addPocket('eleven', $eleven = new ArrayPocket(new TestimonyClue(11,11)));
 		$pockets = iterator_to_array($aggregate);
 		$this->assertEquals($pockets, ['eleven' => $eleven]);
 
@@ -57,7 +62,7 @@ class PocketAggregateTest extends TestCase
 	{
 		$aggregate = new PocketAggregate;
 
-		$aggregate->addPocket('eleven', $eleven = new ArrayPocket(11,11));
+		$aggregate->addPocket('eleven', $eleven = new ArrayPocket(new TestimonyClue(11,11)));
 		$pockets = iterator_to_array($aggregate);
 		$this->assertEquals($pockets, ['eleven' => $eleven]);
 
@@ -73,12 +78,14 @@ class PocketAggregateTest extends TestCase
 	function testCleanPocket()
 	{
 		$aggregate = new PocketAggregate([
-			'eleven' => new ArrayPocket(11,11)
+			'eleven' => new ArrayPocket(
+				$clue11 = new TestimonyClue(11,11)
+				)
 			]);
 
 		$pocket = $aggregate->getPocket('eleven');
 		$things = iterator_to_array($pocket);
-		$this->assertEquals($things, [11,11]);
+		$this->assertEquals($things, [$clue11]);
 
 		$aggregate->cleanPocket('eleven');
 		$things = iterator_to_array($pocket);
