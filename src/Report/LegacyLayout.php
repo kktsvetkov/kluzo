@@ -9,7 +9,8 @@ use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 use Kluzo\Report\AbstractPrintReport as PrintReport;
 
 use function htmlentities;
-use function iterator_to_array;
+use function iterator_count;
+use function mt_srand;
 use function print_r;
 use function shuffle;
 
@@ -75,6 +76,7 @@ class LegacyLayout extends PrintReport
 		if (empty($colors))
 		{
 			$colors = self::POCKET_COLORS;
+			mt_srand();
 			shuffle($colors);
 		}
 		if (false === next($colors))
@@ -98,7 +100,7 @@ class LegacyLayout extends PrintReport
 		{
 			// put dividers between clues
 			//
-			if ($i > 0)
+			if ($i > 0 )
 			{
 				echo '<br />',
 					'<hr style="opacity:20%" />',
@@ -131,29 +133,41 @@ class LegacyLayout extends PrintReport
 				'</strong> ';
 		}
 
-		echo '<span class="clue">';
+		echo '<span class="clue">', "\n\n";
+
 		$clueCount = iterator_count($clue);
-		if (1 === $clueCount)
+		switch ($clueCount)
 		{
-			$things = iterator_to_array($clue);
-			$output = print_r(
-				isset($things[0])
-					? $things[0]
-					: $things, true);
-			echo htmlentities($output);
-		} else
-		if ($clueCount > 1024)
-		{
-			foreach ($clue as $name => $thing)
-			{
-				$output = print_r([$name => $thing], true);
-				echo htmlentities($output);
-			}
-		} else
-		{
-			$things = iterator_to_array($clue);
-			$output = print_r($things, true);
-			echo htmlentities($output);
+			case 0:
+				echo '<i>empty</i>', "\n";
+				break;
+
+			case 1:
+				foreach ($clue as $name => $thing)
+				{
+					if (0 === $name)
+					{
+						echo htmlentities(
+							print_r($thing, true)
+							), "\n";
+						break 2;
+					}
+				}
+
+			default:
+				foreach ($clue as $name => $thing)
+				{
+					is_int($name)
+						? printf("<b style='color:#fff;background:#000;line-height:.8em;font-size:.8em;padding: 0 .2em;'>%08d</b> => %s\n",
+							1 + $name,
+							htmlentities(print_r($thing, true))
+							)
+						: printf("<b>%s</b> => %s\n",
+							htmlentities($name),
+							htmlentities(print_r($thing, true))
+							);
+				}
+				break;
 		}
 
 		if ($clue instanceOf TestimonyClue)
@@ -278,6 +292,8 @@ class LegacyLayout extends PrintReport
 		'.kluzo-debug-bar > pre .clue-label {',
 			'background: white;',
 			'color: black;',
+			'padding: 0 .25em;',
+			'box-shadow: 2px 2px black;',
 		'}',
 		'.kluzo-debug-bar > pre small.clue-index {',
 			'opacity: 50%;',
