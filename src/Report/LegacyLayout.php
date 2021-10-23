@@ -3,6 +3,7 @@
 namespace Kluzo\Report;
 
 use Kluzo\Clue\ClueInterface as Clue;
+use Kluzo\Clue\Testimony as TestimonyClue;
 use Kluzo\Pocket\PocketInterface as Pocket;
 use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 use Kluzo\Report\AbstractPrintReport as PrintReport;
@@ -91,8 +92,12 @@ class LegacyLayout extends PrintReport
 		{
 			if ($i > 0)
 			{
-				echo '<hr class="divider" />';
+				echo '<br />',
+					'<hr style="opacity:20%" />',
+					'<br />';
 			}
+
+			// printf('%05d. ', 1 + $i);
 
 			$this->displayClue($clue, $formats);
 		}
@@ -112,9 +117,17 @@ class LegacyLayout extends PrintReport
 		}
 
 		echo '<span class="clue">';
-
 		$clueCount = iterator_count($clue);
-		if ($clueCount > 100)
+		if (1 === $clueCount)
+		{
+			$things = iterator_to_array($clue);
+			$output = print_r(
+				isset($things[0])
+					? $things[0]
+					: $things, true);
+			echo htmlentities($output);
+		} else
+		if ($clueCount > 1024)
 		{
 			foreach ($clue as $name => $thing)
 			{
@@ -126,6 +139,15 @@ class LegacyLayout extends PrintReport
 			$things = iterator_to_array($clue);
 			$output = print_r($things, true);
 			echo htmlentities($output);
+		}
+
+		if ($clue instanceOf TestimonyClue)
+		{
+			echo '<blockquote style="margin: .25em; padding-left:.5em; border-left: solid 3px white;">',
+				'Called at <u>', $clue->getFile(),
+				':', $clue->getLine(),
+				'</u>', '<br/>', $clue->getTraceAsString(),
+				'</blockquote>';
 		}
 
 		echo '</span>';
