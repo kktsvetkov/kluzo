@@ -5,6 +5,7 @@ namespace Kluzo\Inspector;
 use Kluzo\Clue\Evidence as EvidenceClue;
 use Kluzo\Inspector\DetectiveInspector;
 use Kluzo\Pocket\ArrayPocket;
+use Kluzo\Pocket\LockedPocket;
 use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 use Kluzo\Report\ReportInterface as CaseReport;
 
@@ -45,7 +46,7 @@ class ChiefInspector extends DetectiveInspector
 			}))->setLabel('$_SERVER'),
 		));
 
-		$this->getPockets()->addPocket('Files', new ArrayPocket(
+		$this->getPockets()->addPocket('Files', new LockedPocket(
 			(new EvidenceClue(static function()
 			{
 				return get_included_files();
