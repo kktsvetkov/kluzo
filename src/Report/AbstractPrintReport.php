@@ -39,20 +39,14 @@ abstract class AbstractPrintReport implements CaseReport
 	{
 		foreach ($pocketAggregate as $pocketName => $pocket)
 		{
-			$formats = [$pocketName];
-			if ($pocket instanceOf PocketWithSuggestedFormat)
-			{
-				$formats[] = $pocket->suggestFormat();
-			}
-
-			$this->displayPocket($pocketName, $pocket, $formats);
+			$this->displayPocket($pocketName, $pocket);
 		}
 
 		return $this;
 	}
 
-	abstract protected function displayPocket(string $pocketName, Pocket $pocket, array $formats) : self;
-	abstract protected function displayClue(Clue $clue, array $formats) : self;
+	abstract protected function displayPocket(string $pocketName, Pocket $pocket) : self;
+	abstract protected function displayClue(Clue $clue) : self;
 
 	abstract protected function openDisplay(PocketAggregate $pocketAggregate) : self;
 	abstract protected function closeDisplay(PocketAggregate $pocketAggregate) : self;

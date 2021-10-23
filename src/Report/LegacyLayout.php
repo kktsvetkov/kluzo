@@ -67,10 +67,13 @@ class LegacyLayout extends PrintReport
 		'#476f72'
 		);
 
-	function displayPocket(string $pocketName, Pocket $pocket, array $formats) : self
+	/**
+	* Pick randome color for tab backgrounds
+	*
+	* @return string
+	*/
+	protected function pickTabColor() : string
 	{
-		// pick random background color
-		//
 		static $colors;
 		if (empty($colors))
 		{
@@ -82,14 +85,21 @@ class LegacyLayout extends PrintReport
 			reset($colors);
 		}
 
+		return current($colors);
+	}
+
+	function displayPocket(string $pocketName, Pocket $pocket) : self
+	{
 		$pocketTab = htmlentities( $pocketName );
 		echo '<a name="debug-', $pocketTab, '"></a>',
 			'<pre id="debug-', $pocketTab, '" style="background: ',
-				current( $colors ), '">',
+				$this->pickTabColor(), '">',
 			'<div style="direction: ltr;">';
 
 		foreach ($pocket as $i => $clue)
 		{
+			// put dividers between clues
+			//
 			if ($i > 0)
 			{
 				echo '<br />',
@@ -99,7 +109,7 @@ class LegacyLayout extends PrintReport
 
 			// printf('%05d. ', 1 + $i);
 
-			$this->displayClue($clue, $formats);
+			$this->displayClue($clue);
 		}
 
 		echo '</div>', '</pre>';
@@ -107,13 +117,13 @@ class LegacyLayout extends PrintReport
 		return $this;
 	}
 
-	protected function displayClue(Clue $clue, array $formats) : self
+	protected function displayClue(Clue $clue) : self
 	{
 		if ($label = $clue->getLabel())
 		{
-			echo '<strong class="clue-label" ',
-				'style="background: white; color: black;">',
-				$label, '</strong> ';
+			echo '<strong class="clue-label">',
+				htmlentities($label),
+				'</strong> ';
 		}
 
 		echo '<span class="clue">';
@@ -143,7 +153,7 @@ class LegacyLayout extends PrintReport
 
 		if ($clue instanceOf TestimonyClue)
 		{
-			echo '<blockquote style="margin: .25em; padding-left:.5em; border-left: solid 3px white;">',
+			echo '<blockquote class="caller">',
 				'Called at <u>', $clue->getFile(),
 				':', $clue->getLine(),
 				'</u>', '<br/>', $clue->getTraceAsString(),
@@ -254,6 +264,15 @@ class LegacyLayout extends PrintReport
 			'font: 10pt Courier;',
 			'display: none;',
 			'white-space:pre;',
+		'}',
+		'.kluzo-debug-bar .clue blockquote.caller {',
+			'margin: 1.5em .25em 0;',
+			'padding-left:.5em;',
+			'border-left: solid 3px #fff;',
+		'}',
+		'.kluzo-debug-bar > pre .clue-label {',
+			'background: white;',
+			'color: black;',
 		'}',
 		'</style>';
 
