@@ -67,10 +67,11 @@ abstract class AbstractInspector
 
 	protected $caseClosed = false;
 
-	function closeCase()
+	function closeCase() : self
 	{
 		$this->caseClosed = true;
 		$this->caseReport->sendReport( $this->pocketAggregate );
+		return $this;
 	}
 
 	function __destruct()
