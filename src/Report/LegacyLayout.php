@@ -37,15 +37,13 @@ class LegacyLayout extends PrintReport
 		{
 			$pocketTab = htmlentities($pocketName);
 
-			$thingsCount = ($pocket instanceOf Countable)
-				? $pocket->count()
-				: null;
+			$cluesCount = $pocket->count();
 
 			echo ' <a onClick="return debug_select(this);" id="tab-',
 				$pocketTab, '" href="#debug-',
 				$pocketTab, '">',
 				$pocketTab,
-				((2 <= $thingsCount) ? " ({$thingsCount})" : ''),
+				((2 <= $cluesCount) ? " ({$cluesCount})" : ''),
 				'</a>';
 		}
 
@@ -106,8 +104,6 @@ class LegacyLayout extends PrintReport
 					'<hr style="opacity:20%" />',
 					'<br />';
 			}
-
-			// printf('%05d. ', 1 + $i);
 
 			$this->displayClue($clue);
 		}
