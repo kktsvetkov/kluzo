@@ -33,7 +33,7 @@ class LockedPocket implements Pocket
 
 		InspectorDisguise::getInspector()->log(
 			'bloopers', 'Can\'t put clues in locked pockets'
-			);
+			)->setLabel('Blooper!');
 
 		return $this;
 	}
@@ -46,7 +46,7 @@ class LockedPocket implements Pocket
 
 		InspectorDisguise::getInspector()->log(
 			'bloopers', 'Can\'t clean locked pockets'
-			);
+			)->setLabel('Blooper!');
 
 		return $this;
 	}
