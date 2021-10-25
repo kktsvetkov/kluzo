@@ -7,6 +7,7 @@ use Kluzo\Clue\Testimony as TestimonyClue;
 use Kluzo\Pocket\PocketInterface as Pocket;
 use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 use Kluzo\Report\AbstractPrintReport as PrintReport;
+use Kluzo\Report\Format\Register as FormatRegister;
 
 use function htmlentities;
 use function iterator_count;
@@ -135,51 +136,25 @@ class LegacyLayout extends PrintReport
 
 		echo '<span class="clue">', "\n\n";
 
-		$clueCount = iterator_count($clue);
-		switch ($clueCount)
-		{
-			case 0:
-				echo '<i>empty</i>', "\n";
-				break;
-
-			case 1:
-				foreach ($clue as $name => $thing)
-				{
-					if (0 === $name)
-					{
-						echo htmlentities(
-							print_r($thing, true)
-							), "\n";
-						break 2;
-					}
-				}
-
-			default:
-				foreach ($clue as $name => $thing)
-				{
-					is_int($name)
-						? printf("<b style='color:#fff;background:#000;line-height:.8em;font-size:.8em;padding: 0 .2em;'>%08d</b> => %s\n",
-							1 + $name,
-							htmlentities(print_r($thing, true))
-							)
-						: printf("<b>%s</b> => %s\n",
-							htmlentities($name),
-							htmlentities(print_r($thing, true))
-							);
-				}
-				break;
-		}
+		echo FormatRegister::getFormat()->format($clue);
 
 		if ($clue instanceOf TestimonyClue)
 		{
-			echo '<blockquote class="caller">',
-				'Called at <u>', $clue->getFile(),
-				':', $clue->getLine(),
-				'</u>', '<br/>', $clue->getTraceAsString(),
-				'</blockquote>';
+			$this->displayCaller($clue);
 		}
 
 		echo '</span>';
+		return $this;
+	}
+
+	protected function displayCaller(TestimonyClue $clue) : self
+	{
+		echo '<blockquote class="caller">',
+			'Called at <u>', $clue->getFile(),
+			':', $clue->getLine(),
+			'</u>', '<br/>', $clue->getTraceAsString(),
+			'</blockquote>';
+
 		return $this;
 	}
 
@@ -298,6 +273,19 @@ class LegacyLayout extends PrintReport
 		'.kluzo-debug-bar > pre small.clue-index {',
 			'opacity: 50%;',
 			'color: khaki;',
+		'}',
+		'.kluzo-debug-bar > pre .clue b > samp {',
+			'color:#fff;',
+			'background:#000;',
+			'line-height:.8em;',
+			'font-size:.8em;',
+			'padding: 0 .2em;',
+		'}',
+		'.kluzo-debug-bar > pre .clue b > code {',
+			'color: orange;',
+			'background:transparent;',
+			'border: 0;',
+			'padding: 0;',
 		'}',
 		'</style>';
 
