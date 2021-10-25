@@ -2,7 +2,9 @@
 
 namespace Kluzo\Report\Format;
 
+use Kluzo\Clue\ClueInterface as Clue;
+
 interface FormatInterface
 {
-	function format($thing) : string;
+	function format(Clue $clue) : string;
 }
