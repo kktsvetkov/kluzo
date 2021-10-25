@@ -48,6 +48,11 @@ abstract class AbstractInspector
 		return $this->caseSuspended;
 	}
 
+	function isCaseActive() : bool
+	{
+		return !$this->caseSuspended;
+	}
+
 	function unblockPocket(string $pocketName) : self
 	{
 		$this->pocketAggregate->unblockPocket( $pocketName );
