@@ -30,12 +30,16 @@ final class Disguise
 	}
 
 	private const METHOD_ALIAS = array(
-		'ison' => 'isEnabled',
+		'ison' => 'isCaseActive',
+		'isoff' => 'isCaseSuspended',
+		'on' => 'resumeCase',
+		'off' => 'suspendCase',
 		'enable' => 'resumeCase',
 		'disable' => 'suspendCase',
-		'on' => 'unblockPocket',
-		'off' => 'blockPocket',
+		'allow' => 'unblockPocket',
+		'ban' => 'blockPocket',
 		'clear' => 'cleanPocket',
+		'clean' => 'cleanPocket',
 	);
 
 	static function __callStatic(string $method, array $args)
