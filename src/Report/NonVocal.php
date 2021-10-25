@@ -9,5 +9,6 @@ class NonVocal implements CaseReport
 {
 	function sendReport(PocketAggregate $pocketAggregate)
 	{
+		// do nothing;
 	}
 }
