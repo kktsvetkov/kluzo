@@ -23,10 +23,13 @@ class DetectiveInspector extends Inspector implements PocketStrategyFinder
 		$pocketAggregate = $this->getPockets();
 		if (!$pocket = $pocketAggregate->getPocket( $pocketName ))
 		{
-			$pocket = $this->getStrategy()->findPocket(
-				$pocketName,
-				$pocketAggregate
-				);
+			if (!$pocketAggregate->isBlocked( $pocketName ))
+			{
+				$pocket = $this->getStrategy()->findPocket(
+					$pocketName,
+					$pocketAggregate
+					);
+			}
 
 			if (!$pocket)
 			{
