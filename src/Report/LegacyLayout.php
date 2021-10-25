@@ -10,9 +10,7 @@ use Kluzo\Report\AbstractPrintReport as PrintReport;
 use Kluzo\Report\Format\Register as FormatRegister;
 
 use function htmlentities;
-use function iterator_count;
 use function mt_srand;
-use function print_r;
 use function shuffle;
 
 use function current;
@@ -144,6 +142,7 @@ class LegacyLayout extends PrintReport
 		}
 
 		echo '</span>';
+
 		return $this;
 	}
 
