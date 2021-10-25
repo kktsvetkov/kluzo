@@ -2,7 +2,7 @@
 
 namespace Kluzo\Report;
 
-use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
+use Kluzo\Pocket\Aggregate\AggregateInterface as PocketAggregate;
 
 interface ReportInterface
 {

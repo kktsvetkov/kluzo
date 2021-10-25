@@ -4,10 +4,8 @@ namespace Kluzo\Tests;
 
 use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Clue\Testimony as TestimonyClue;
-use Kluzo\Pocket\PocketAggregate;
-use Kluzo\Pocket\PocketFactory;
+use Kluzo\Pocket\Aggregate\DefaultAggregate as PocketAggregate;
 use Kluzo\Pocket\ArrayPocket;
-
 use PHPUnit\Framework\TestCase;
 
 use function iterator_to_array;
@@ -90,19 +88,5 @@ class PocketAggregateTest extends TestCase
 		$aggregate->cleanPocket('eleven');
 		$things = iterator_to_array($pocket);
 		$this->assertEquals($things, []);
-	}
-
-	/**
-	* @covers Kluzo\Pocket\PocketAggregate::setEmptyPocketFactory()
-	* @covers Kluzo\Pocket\PocketAggregate::createEmptyPocket()
-	*/
-	function testEmptyPocketFactory()
-	{
-		$aggregate = new PocketAggregate;
-		$aggregate->setEmptyPocketFactory(
-			PocketFactory::withArrayPocket()
-			);
-		$pocket = $aggregate->createEmptyPocket();
-		$this->assertInstanceOf(ArrayPocket::class, $pocket);
 	}
 }

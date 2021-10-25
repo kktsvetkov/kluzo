@@ -1,48 +1,43 @@
 <?php
 
-namespace Kluzo\Pocket;
+namespace Kluzo\Pocket\Aggregate;
 
-use Kluzo\Pocket\PocketAggregateInterface as Aggregate;
+use Kluzo\Pocket\Aggregate\AggregateInterface as PocketAggregate;
 use Kluzo\Pocket\PocketInterface as Pocket;
-use Kluzo\Pocket\PocketFactoryInterface as PocketFactory;
-use Kluzo\Pocket\PocketFactory as DefaultPocketFactory;
-
 use Generator;
 
 use function array_filter;
 use function strtolower;
 
-class PocketAggregate implements Aggregate
+class DefaultAggregate implements PocketAggregate
 {
 	protected $pockets = array();
 
-	function __construct(array $pockets = [], PocketFactory $emptyPocketFactory = null)
+	function __construct(array $pockets = [])
 	{
 		$this->pockets = array_filter($pockets, function($pocket)
 		{
 			return ($pocket instanceOf Pocket);
 		});
-
-		$this->setEmptyPocketFactory(
-			$emptyPocketFactory ?? DefaultPocketFactory::withArrayPocket()
-		);
 	}
 
-	function addPocket(string $pocketName, Pocket $pocketObject) : Aggregate
+	function addPocket(string $pocketName, Pocket $pocketObject) : PocketAggregate
 	{
 		$pocketName = strtolower($pocketName);
 		$this->pockets[ $pocketName ] = $pocketObject;
+
 		return $this;
 	}
 
-	function dropPocket(string $pocketName) : Aggregate
+	function dropPocket(string $pocketName) : PocketAggregate
 	{
 		$pocketName = strtolower($pocketName);
 		unset($this->pockets[ $pocketName ]);
+
 		return $this;
 	}
 
-	function cleanPocket(string $pocketName) : Aggregate
+	function cleanPocket(string $pocketName) : PocketAggregate
 	{
 		$pocketName = strtolower($pocketName);
 		if ($pocket = $this->getPocket( $pocketName ))
@@ -53,35 +48,20 @@ class PocketAggregate implements Aggregate
 		return $this;
 	}
 
-	/**
-	* @var Kluzo\Pocket\PocketFactoryInterface
-	*/
-	protected $emptyPocketFactory;
-
-	function setEmptyPocketFactory(PocketFactory $emptyPocketFactory) : Aggregate
-	{
-		$this->emptyPocketFactory = $emptyPocketFactory;
-		return $this;
-	}
-
-	function createEmptyPocket() : Pocket
-	{
-		return $this->emptyPocketFactory->createPocket();
-	}
-
 	protected $blockedPockets = array();
 
-	function unblockPocket(string $pocketName) : Aggregate
+	function unblockPocket(string $pocketName) : PocketAggregate
 	{
 		$pocketName = strtolower($pocketName);
 		unset($this->blockedPockets[ $pocketName ]);
 		return $this;
 	}
 
-	function blockPocket(string $pocketName) : Aggregate
+	function blockPocket(string $pocketName) : PocketAggregate
 	{
 		$pocketName = strtolower($pocketName);
 		$this->blockedPockets[ $pocketName ] = true;
+
 		return $this;
 	}
 
@@ -99,9 +79,7 @@ class PocketAggregate implements Aggregate
 			return null;
 		}
 
-		return $this->pockets[ $pocketName ] ?? (
-			$this->pockets[ $pocketName ] = $this->createEmptyPocket()
-			);
+		return $this->pockets[ $pocketName ] ?? null;
 	}
 
 	function getIterator() : Generator

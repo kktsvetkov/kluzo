@@ -4,9 +4,8 @@ namespace Kluzo\Tests;
 
 use Kluzo\Clue\Testimony as TestimonyClue;
 use Kluzo\Inspector\DetectiveInspector as Inspector;
+use Kluzo\Pocket\Aggregate\DefaultAggregate as PocketAggregate;
 use Kluzo\Pocket\ArrayPocket;
-use Kluzo\Pocket\PocketAggregate;
-use Kluzo\Pocket\PocketFactory;
 use Kluzo\Report\NonVocal as NonVocalReport;
 use PHPUnit\Framework\TestCase;
 
@@ -38,24 +37,6 @@ class InspectorTest extends TestCase
 		$inspector = new Inspector(null, new NonVocalReport);
 		$this->assertEquals(new PocketAggregate, $empty = $inspector->getPockets());
 		$this->assertInstanceOf(PocketAggregate::class, $empty);
-	}
-
-	/**
-	* @covers Kluzo\Inspector\DetectiveInspector::log()
-	* @covers Kluzo\Inspector\DetectiveInspector::getPockets()
-	*/
-	function testEmptyPocketLogging()
-	{
-		$inspector = new Inspector(null, new NonVocalReport);
-
-		$inspector->log('eleven', 11, 11);
-		$this->assertInstanceOf(
-			ArrayPocket::class,
-			$pocket = $inspector->getPockets()->getPocket('eleven')
-			);
-
-		$clues = iterator_to_array($pocket);
-		$this->assertEquals($clues, [new TestimonyClue(11,11)]);
 	}
 
 	/**

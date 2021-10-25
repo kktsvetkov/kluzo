@@ -1,11 +1,11 @@
 <?php
 
-namespace Kluzo\Pocket;
+namespace Kluzo\Pocket\Aggregate;
 
 use Kluzo\Pocket\PocketInterface as Pocket;
 use IteratorAggregate;
 
-interface PocketAggregateInterface Extends IteratorAggregate
+interface AggregateInterface Extends IteratorAggregate
 {
 	function getPocket(string $pocketName) : ?Pocket;
 	function addPocket(string $pocketName, Pocket $pocketObject) : self;

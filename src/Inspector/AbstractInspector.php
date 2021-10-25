@@ -4,8 +4,11 @@ namespace Kluzo\Inspector;
 
 use Kluzo\Clue\ClueInterface as Clue;
 
-use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
-use Kluzo\Pocket\PocketAggregate as DefaultPocketAggregate;
+use Kluzo\Pocket\Aggregate\AggregateInterface as PocketAggregate;
+use Kluzo\Pocket\Aggregate\DefaultAggregate as DefaultPocketAggregate;
+
+use Kluzo\Pocket\Strategy\StrategyInterface as PocketStrategy;
+use Kluzo\Pocket\Strategy\CreateStrategy as DefaultPocketStrategy;
 
 use Kluzo\Report\ReportInterface as CaseReport;
 use Kluzo\Report\LegacyLayout as DefaultReport;
@@ -17,7 +20,8 @@ abstract class AbstractInspector
 
 	function __construct(
 		PocketAggregate $pocketAggregate = null,
-		CaseReport $caseReport = null)
+		CaseReport $caseReport = null
+		)
 	{
 		$this->caseReport = $caseReport ?? new DefaultReport;
 		$this->pocketAggregate = $pocketAggregate ?? new DefaultPocketAggregate;

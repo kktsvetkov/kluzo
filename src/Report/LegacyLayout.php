@@ -4,8 +4,8 @@ namespace Kluzo\Report;
 
 use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Clue\Testimony as TestimonyClue;
+use Kluzo\Pocket\Aggregate\AggregateInterface as PocketAggregate;
 use Kluzo\Pocket\PocketInterface as Pocket;
-use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 use Kluzo\Report\AbstractPrintReport as PrintReport;
 use Kluzo\Report\Format\Register as FormatRegister;
 

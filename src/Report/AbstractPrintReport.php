@@ -3,8 +3,8 @@
 namespace Kluzo\Report;
 
 use Kluzo\Clue\ClueInterface as Clue;
+use Kluzo\Pocket\Aggregate\AggregateInterface as PocketAggregate;
 use Kluzo\Pocket\PocketInterface as Pocket;
-use Kluzo\Pocket\PocketAggregateInterface as PocketAggregate;
 use Kluzo\Report\ReportInterface as CaseReport;
 
 use Kluzo\Kit\HTTP as HTTPKit;
