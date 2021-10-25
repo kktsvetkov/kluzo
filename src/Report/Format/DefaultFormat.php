@@ -37,7 +37,6 @@ class DefaultFormat implements ReportFormat
 				$output = '';
 				foreach ($clue as $name => $thing)
 				{
-					// "<b style='color:#fff;background:#000;line-height:.8em;font-size:.8em;padding: 0 .2em;'>%08d</b> => %s\n"
 					$output .= is_int($name)
 						? sprintf("<b><samp>%08d</samp></b> => %s\n",
 							1 + $name,
