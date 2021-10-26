@@ -4,10 +4,10 @@ namespace Kluzo\Report;
 
 use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Clue\Testimony as TestimonyClue;
+use Kluzo\Kit\Dump as DumpKit;
 use Kluzo\Pocket\Aggregate\AggregateInterface as PocketAggregate;
 use Kluzo\Pocket\PocketInterface as Pocket;
 use Kluzo\Report\AbstractPrintReport as PrintReport;
-use Kluzo\Report\Format\Register as FormatRegister;
 
 use function htmlentities;
 use function mt_srand;
@@ -41,8 +41,17 @@ class LegacyLayout extends PrintReport
 			echo ' <a onClick="return debug_select(this);" id="tab-',
 				$pocketTab, '" href="#debug-',
 				$pocketTab, '">',
+
 				$pocketTab,
-				((!$pocket->is('no.count')) ? " ({$cluesCount})" : ''),
+
+				((!$pocket->is('no.count'))
+					? " ({$cluesCount})"
+					: ''),
+
+				(($pocketAggregate->isBlocked($pocketName))
+					? ' &#x1F512;'
+					: ''),
+
 				'</a>';
 		}
 
@@ -134,11 +143,43 @@ class LegacyLayout extends PrintReport
 
 		echo '<span class="clue">', "\n\n";
 
-		echo FormatRegister::getFormat()->format($clue);
+		$suggestedFormat = $clue->getFormat();
+		if (!$clueCount = iterator_count($clue))
+		{
+			$suggestedFormat = 'empty';
+		}
+		switch ($suggestedFormat)
+		{
+			case 'assoc' :
+				echo $this->formatAssoc($clue);
+				break;
+
+			case 'index' :
+				echo $this->formatIndex($clue, 0);
+				break;
+
+			case 'list' :
+				echo $this->formatIndex($clue, 1);
+				break;
+
+			case 'raw' :
+			case 'html' :
+				echo $this->formatRaw($clue);
+				break;
+
+			case 'empty' :
+				echo '<i>empty</i>', "\n";
+				break;
+
+			case 'default':
+			default:
+				echo $this->formatDefault($clue);
+				break;
+		}
 
 		if ($clue instanceOf TestimonyClue)
 		{
-			$this->displayCaller($clue);
+			echo $this->formatCaller($clue);
 		}
 
 		echo '</span>';
@@ -146,15 +187,64 @@ class LegacyLayout extends PrintReport
 		return $this;
 	}
 
-	protected function displayCaller(TestimonyClue $clue) : self
+	protected function formatDefault(Clue $clue) : string
 	{
-		echo '<blockquote class="caller">',
-			'Called at <u>', $clue->getFile(),
-			':', $clue->getLine(),
-			'</u>', '<br/>', $clue->getTraceAsString(),
-			'</blockquote>';
+		$output = '';
+		foreach ($clue as $thing)
+		{
+			$output .= htmlentities( DumpKit::dump($thing) ) . "\n";
+		}
 
-		return $this;
+		return $output;
+	}
+
+	protected function formatRaw(Clue $clue) : string
+	{
+		$output = '';
+		foreach ($clue as $raw)
+		{
+			$output .= $raw;
+		}
+
+		return $output;
+	}
+
+	protected function formatAssoc(Clue $clue) : string
+	{
+		$output = '';
+		foreach ($clue as $name => $thing)
+		{
+			$output .= sprintf("<b><code>%s</code></b> => %s\n",
+				htmlentities($name),
+				htmlentities( DumpKit::dump($thing) )
+				);
+		}
+
+		return $output;
+	}
+
+	protected function formatIndex(Clue $clue, int $offset = 0) : string
+	{
+		$output = '';
+		foreach ($clue as $index => $thing)
+		{
+			$output .= sprintf("<b><samp>%08d</samp></b> => %s\n",
+				$offset + $index,
+				htmlentities( DumpKit::dump($thing) )
+				);
+		}
+
+		return $output;
+	}
+
+	protected function formatCaller(TestimonyClue $clue) : string
+	{
+		return  '<blockquote class="caller">'
+				. 'Called at <u>'
+					. $clue->getFile() . ':' . $clue->getLine()
+					. '</u>'
+				. '<br/>' . $clue->getTraceAsString()
+			. '</blockquote>';
 	}
 
 	function introduceJavascript(PocketAggregate $pocketAggregate) : self
