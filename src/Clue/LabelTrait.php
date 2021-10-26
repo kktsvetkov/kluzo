@@ -16,4 +16,11 @@ trait LabelTrait
 	{
 		return $this->label;
 	}
+
+	function label(string $label = null)
+	{
+		return (null !== $label)
+			? $this->setLabel($label)
+			: $this->getLabel();
+	}
 }
