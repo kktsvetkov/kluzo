@@ -21,7 +21,6 @@ class Evidence implements Clue
 
 	function getIterator() : Generator
 	{
-		$evidenceCallback = $this->callback;
-		yield from $evidenceCallback();
+		yield from ($this->callback)();
 	}
 }
