@@ -29,7 +29,7 @@ class LockedPocket extends ArrayPocket
 
 		InspectorDisguise::getInspector()->log(
 			'bloopers', 'Can\'t put clues in locked pockets'
-			)->setLabel('Blooper!');
+			)->setLabel('Blooper!')->as('blooper');
 
 		return $this;
 	}
@@ -42,7 +42,7 @@ class LockedPocket extends ArrayPocket
 
 		InspectorDisguise::getInspector()->log(
 			'bloopers', 'Can\'t clean locked pockets'
-			)->setLabel('Blooper!');
+			)->setLabel('Blooper!')->as('blooper');
 
 		return $this;
 	}
