@@ -4,8 +4,8 @@ namespace Kluzo\Pocket;
 
 use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Disguise as InspectorDisguise;
+use Kluzo\Pocket\ArrayPocket;
 use Kluzo\Pocket\PocketInterface as Pocket;
-use Kluzo\Pocket\PocketInstructionTrait;
 use Generator;
 
 use const E_USER_WARNING;
@@ -13,16 +13,12 @@ use const E_USER_WARNING;
 use function iterator_count;
 use function trigger_error;
 
-class LockedPocket implements Pocket
+class LockedPocket extends ArrayPocket
 {
-	use PocketInstructionTrait;
-
-	protected $clue;
-
-	function __construct(Clue $clue)
+	function __construct(...$clues)
 	{
-		$this->clue = $clue;
-		$this->with('no.index');
+		parent::__construct(...$clues);
+		$this->with('no.index', 'no.count');
 	}
 
 	function put(Clue $clue) : Pocket
@@ -51,13 +47,8 @@ class LockedPocket implements Pocket
 		return $this;
 	}
 
-	function getIterator() : Generator
-	{
-		yield $this->clue;
-	}
-
 	function count() : int
 	{
-		return iterator_count($this->clue);
+		return 0;
 	}
 }
