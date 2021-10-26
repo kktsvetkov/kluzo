@@ -5,6 +5,7 @@ namespace Kluzo\Report;
 use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Clue\Testimony as TestimonyClue;
 use Kluzo\Kit\Dump as DumpKit;
+use Kluzo\Kit\Trace as TraceKit;
 use Kluzo\Pocket\Aggregate\AggregateInterface as PocketAggregate;
 use Kluzo\Pocket\PocketInterface as Pocket;
 use Kluzo\Report\AbstractPrintReport as PrintReport;
@@ -241,11 +242,16 @@ class LegacyLayout extends PrintReport
 
 	protected function formatCaller(TestimonyClue $clue) : string
 	{
+		$trace = TraceKit::unjunk( $clue->getTrace() );
+		$caller = current($trace);
+
 		return  '<blockquote class="caller">'
 				. 'Called at <u>'
-					. $clue->getFile() . ':' . $clue->getLine()
+					. $caller['file'] . ':' . $caller['line']
 					. '</u>'
-				. '<br/>' . $clue->getTraceAsString()
+				. ( (count($trace) > 1)
+				 	?  '<br/>' . TraceKit::format( $trace )
+					: '' )
 			. '</blockquote>';
 	}
 
