@@ -23,19 +23,19 @@ class ChiefInspector extends DetectiveInspector
 					{
 						return $_GET;
 					})
-				)->setLabel('$_GET'),
+				)->setLabel('$_GET')->formatAs('assoc'),
 			(new EvidenceClue(
 					static function()
 					{
 						return $_POST;
 					})
-				)->setLabel('$_POST'),
+				)->setLabel('$_POST')->formatAs('assoc'),
 			(new EvidenceClue(
 					static function()
 					{
 						return $_COOKIE;
 					})
-				)->setLabel('$_COOKIE')
+				)->setLabel('$_COOKIE')->formatAs('assoc')
 			));
 
 		$this->getPockets()->addPocket('Session', new LockedPocket(
@@ -44,7 +44,7 @@ class ChiefInspector extends DetectiveInspector
 					{
 						return $_SESSION ?? [];
 					})
-				)->setLabel('$_SESSION')
+				)->setLabel('$_SESSION')->formatAs('assoc')
 			));
 
 		$this->getPockets()->addPocket('Server', new LockedPocket(
@@ -53,14 +53,16 @@ class ChiefInspector extends DetectiveInspector
 					{
 						return $_SERVER ?? [];
 					})
-				)->setLabel('$_SERVER')
+				)->setLabel('$_SERVER')->formatAs('assoc')
 			));
 
 		$this->getPockets()->addPocket('Files', new LockedPocket(
-			(new EvidenceClue(static function()
-			{
-				return get_included_files();
-			}))->setLabel('get_included_files()'),
+			(new EvidenceClue(
+					static function()
+					{
+						return get_included_files();
+					})
+				)->setLabel('get_included_files()')->formatAs('list'),
 		));
 	}
 }
