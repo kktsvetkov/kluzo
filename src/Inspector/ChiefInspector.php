@@ -6,6 +6,7 @@ use Kluzo\Clue\Evidence as EvidenceClue;
 use Kluzo\Inspector\DetectiveInspector;
 use Kluzo\Pocket\Aggregate\AggregateInterface as PocketAggregate;
 use Kluzo\Pocket\ArrayPocket;
+use Kluzo\Pocket\LockedPocket;
 use Kluzo\Pocket\ShallowPocket;
 use Kluzo\Report\ReportInterface as CaseReport;
 
@@ -17,23 +18,20 @@ class ChiefInspector extends DetectiveInspector
 	{
 		parent::__construct($pocketAggregate, $caseReport);
 
-		$this->getPockets()->addPocket('Request', (new ArrayPocket)
-			->with('no.count', 'no.index')
-			->put( (new EvidenceClue(
+		$this->getPockets()->addPocket('Request', new LockedPocket(
+			(new EvidenceClue(
 					static function()
 					{
 						return $_GET;
 					})
-				)->setLabel('$_GET')
-			)
-			->put( (new EvidenceClue(
+				)->setLabel('$_GET'),
+			(new EvidenceClue(
 					static function()
 					{
 						return $_POST;
 					})
-				)->setLabel('$_POST')
-			)
-			->put( (new EvidenceClue(
+				)->setLabel('$_POST'),
+			(new EvidenceClue(
 					static function()
 					{
 						return $_COOKIE;
@@ -41,9 +39,8 @@ class ChiefInspector extends DetectiveInspector
 				)->setLabel('$_COOKIE')
 			));
 
-		$this->getPockets()->addPocket('Session', (new ArrayPocket)
-			->with('no.count', 'no.index')
-			->put( (new EvidenceClue(
+		$this->getPockets()->addPocket('Session', new LockedPocket(
+			(new EvidenceClue(
 					static function()
 					{
 						return $_SESSION ?? [];
@@ -51,9 +48,8 @@ class ChiefInspector extends DetectiveInspector
 				)->setLabel('$_SESSION')
 			));
 
-		$this->getPockets()->addPocket('Server', (new ArrayPocket)
-			->with('no.count', 'no.index')
-			->put( (new EvidenceClue(
+		$this->getPockets()->addPocket('Server', new LockedPocket(
+			(new EvidenceClue(
 					static function()
 					{
 						return $_SERVER ?? [];
