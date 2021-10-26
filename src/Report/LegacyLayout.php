@@ -162,6 +162,7 @@ class LegacyLayout extends PrintReport
 				echo $this->formatIndex($clue, 1);
 				break;
 
+			case 'blooper' :
 			case 'raw' :
 			case 'html' :
 				echo $this->formatRaw($clue);
@@ -192,7 +193,8 @@ class LegacyLayout extends PrintReport
 		$output = '';
 		foreach ($clue as $thing)
 		{
-			$output .= htmlentities( DumpKit::dump($thing) ) . "\n";
+			$output .= '&#x23F5; '
+				. htmlentities( DumpKit::dump($thing) );
 		}
 
 		return $output;
@@ -203,7 +205,7 @@ class LegacyLayout extends PrintReport
 		$output = '';
 		foreach ($clue as $raw)
 		{
-			$output .= $raw;
+			$output .= $raw . "\n";
 		}
 
 		return $output;
@@ -214,7 +216,7 @@ class LegacyLayout extends PrintReport
 		$output = '';
 		foreach ($clue as $name => $thing)
 		{
-			$output .= sprintf("<b><code>%s</code></b> => %s\n",
+			$output .= sprintf("<b><code>%s</code></b> => %s",
 				htmlentities($name),
 				htmlentities( DumpKit::dump($thing) )
 				);
@@ -228,7 +230,7 @@ class LegacyLayout extends PrintReport
 		$output = '';
 		foreach ($clue as $index => $thing)
 		{
-			$output .= sprintf("<b><samp>%08d</samp></b> => %s\n",
+			$output .= sprintf("<b><samp>%08d</samp></b> => %s",
 				$offset + $index,
 				htmlentities( DumpKit::dump($thing) )
 				);
