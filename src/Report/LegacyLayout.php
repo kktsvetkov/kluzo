@@ -170,6 +170,10 @@ class LegacyLayout extends PrintReport
 				break;
 
 			case 'blooper' :
+			case 'text' :
+				echo $this->formatText($clue);
+				break;
+
 			case 'raw' :
 			case 'html' :
 				echo $this->formatRaw($clue);
@@ -213,6 +217,17 @@ class LegacyLayout extends PrintReport
 		foreach ($clue as $raw)
 		{
 			$output .= $raw . "\n";
+		}
+
+		return $output;
+	}
+
+	protected function formatText(Clue $clue) : string
+	{
+		$output = '';
+		foreach ($clue as $raw)
+		{
+			$output .= htmlentities($raw) . "\n";
 		}
 
 		return $output;
