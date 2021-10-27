@@ -2,26 +2,20 @@
 
 namespace Kluzo\Clue;
 
+use Kluzo\Clue\MetaTrait;
+
 trait FormatTrait
 {
-	protected $suggestedFormat = '';
+	use MetaTrait;
 
 	function formatAs(string $format) : self
 	{
-		$this->suggestedFormat = $format;
-		return $this;
+		return $this->setMeta('format', $format);
 	}
 
 	function getFormat() : string
 	{
-		return $this->suggestedFormat;
-	}
-
-	function as(string $format = null)
-	{
-		return (null !== $format)
-			? $this->formatAs($format)
-			: $this->getFormat();
+		return $this->getMeta('format') ?? '';
 	}
 
 	function miss() : self
