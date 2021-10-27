@@ -142,9 +142,15 @@ class LegacyLayout extends PrintReport
 				'</strong> ';
 		}
 
+		if ($suggestedFormat = $clue->getFormat())
+		{
+			echo '<kbd class="clue-format">',
+				htmlentities($suggestedFormat),
+				'</kbd> ';
+		}
+
 		echo '<span class="clue">', "\n\n";
 
-		$suggestedFormat = $clue->getFormat();
 		if (!$clueCount = iterator_count($clue))
 		{
 			$suggestedFormat = 'empty';
@@ -370,6 +376,14 @@ class LegacyLayout extends PrintReport
 		'.kluzo-debug-bar > pre small.clue-index {',
 			'opacity: 50%;',
 			'color: khaki;',
+		'}',
+		'.kluzo-debug-bar > pre kbd.clue-format {',
+			'opacity: 50%;',
+			'font-size: .75em;',
+			'padding: 1px 3px 2px;',
+			'color: white;',
+			'border: solid 1px white;',
+			'border-radius: 2px;',
 		'}',
 		'.kluzo-debug-bar > pre .clue b > samp {',
 			'color:#fff;',

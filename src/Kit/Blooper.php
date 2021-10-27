@@ -35,9 +35,7 @@ class Blooper
 		}
 
 		$blooperPocket->put(
-			(new TestimonyClue($blooper))
-				->setLabel('Blooper!')
-				->as('blooper')
+			(new TestimonyClue($blooper))->formatAs('blooper')
 			);
 	}
 }
