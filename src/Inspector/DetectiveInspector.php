@@ -7,12 +7,13 @@ use Kluzo\Clue\Ignore as IgnoreClue;
 use Kluzo\Clue\Testimony as TestimonyClue;
 
 use Kluzo\Inspector\AbstractInspector as Inspector;
+use Kluzo\Inspector\StrategyAwareTrait;
 use Kluzo\Pocket\StrategyInterface as PocketStrategyFinder;
-use Kluzo\Pocket\Strategy\StrategyInterface as PocketStrategy;
-use Kluzo\Pocket\Strategy\CreateStrategy as DefaultPocketStrategy;
 
 class DetectiveInspector extends Inspector implements PocketStrategyFinder
 {
+	use StrategyAwareTrait;
+
 	function log(string $pocketName, ...$things) : Clue
 	{
 		if ($this->caseSuspended)
@@ -41,18 +42,4 @@ class DetectiveInspector extends Inspector implements PocketStrategyFinder
 		return $clue;
 	}
 
-	protected $strategy;
-
-	function setStrategy(PocketStrategy $strategy) : self
-	{
-		$this->strategy = $strategy;
-		return $this;
-	}
-
-	function getStrategy() : ?PocketStrategy
-	{
-		return $this->strategy ?? (
-			$this->strategy = new DefaultPocketStrategy
-			);
-	}
 }
