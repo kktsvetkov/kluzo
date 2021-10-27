@@ -23,4 +23,19 @@ trait FormatTrait
 			? $this->formatAs($format)
 			: $this->getFormat();
 	}
+
+	function miss() : self
+	{
+		return $this->formatAs('miss');
+	}
+
+	function text() : self
+	{
+		return $this->formatAs('text');
+	}
+
+	function html() : self
+	{
+		return $this->formatAs('html');
+	}
 }
