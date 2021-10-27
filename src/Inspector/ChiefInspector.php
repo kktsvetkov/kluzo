@@ -3,6 +3,7 @@
 namespace Kluzo\Inspector;
 
 use Kluzo\Clue\Evidence as EvidenceClue;
+use Kluzo\Clue\Testimony as TestimonyClue;
 use Kluzo\Inspector\DetectiveInspector;
 use Kluzo\Pocket\Aggregate\AggregateInterface as PocketAggregate;
 use Kluzo\Pocket\ArrayPocket;
@@ -64,5 +65,40 @@ class ChiefInspector extends DetectiveInspector
 					})
 				)->setLabel('get_included_files()')->formatAs('list'),
 		));
+	}
+
+
+	function cleanPocket(string $pocketName) : self
+	{
+		$pocket = $this->getPockets()->getPocket($pocketName);
+
+		if ($pocket instanceOf LockedPocket)
+		{
+			$pocket->clean();
+			return $this;
+		}
+
+		$count = $pocket->count();
+		$pocket->clean();
+
+		$pocket->put( (new TestimonyClue(
+			"Pocked cleaned, clues removed: {$count}"
+			))->formatAs('info') );
+
+		return $this;
+	}
+
+	function unblockPocket(string $pocketName) : self
+	{
+		parent::unblockPocket($pocketName);
+
+		$this->log($pocketName, 'Pocked unblocked')->formatAs('info');
+		return $this;
+	}
+
+	function blockPocket(string $pocketName) : self
+	{
+		$this->log($pocketName, 'Pocked blocked')->formatAs('info');
+		return parent::blockPocket($pocketName);
 	}
 }
