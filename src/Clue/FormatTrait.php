@@ -13,11 +13,6 @@ trait FormatTrait
 		return $this->setMeta('format', $format);
 	}
 
-	function getFormat() : string
-	{
-		return $this->getMeta('format') ?? '';
-	}
-
 	function miss() : self
 	{
 		return $this->formatAs('miss');
