@@ -29,6 +29,11 @@ abstract class AbstractInspector
 		return $this->pocketAggregate;
 	}
 
+	function getReport() : CaseReport
+	{
+		return $this->caseReport;
+	}
+
 	protected $caseSuspended = false;
 
 	function suspendCase() : self
