@@ -3,11 +3,12 @@
 namespace Kluzo\Report;
 
 use Kluzo\Clue\ClueInterface as Clue;
+use Kluzo\Kit\HTTP as HTTPKit;
 use Kluzo\Pocket\Aggregate\AggregateInterface as PocketAggregate;
 use Kluzo\Pocket\PocketInterface as Pocket;
+use Kluzo\Report\Format\Aggregate as FormatAggregate;
+use Kluzo\Report\Format\Standard as StandardFormat;
 use Kluzo\Report\ReportInterface as CaseReport;
-
-use Kluzo\Kit\HTTP as HTTPKit;
 
 abstract class AbstractPrintReport implements CaseReport
 {
@@ -48,4 +49,13 @@ abstract class AbstractPrintReport implements CaseReport
 
 	abstract protected function introduceJavascript(PocketAggregate $pocketAggregate) : self;
 	abstract protected function introduceCSS(PocketAggregate $pocketAggregate) : self;
+
+	protected $formatAggregate;
+
+	function getFormats() : FormatAggregate
+	{
+		return $this->formatAggregate ?? (
+			$this->formatAggregate = StandardFormat::loadFormats()
+		);
+	}
 }
