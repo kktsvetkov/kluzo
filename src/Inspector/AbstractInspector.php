@@ -34,6 +34,16 @@ abstract class AbstractInspector
 		return $this->caseReport;
 	}
 
+	function setReport(CaseReport $caseReport) : self
+	{
+		if (!$this->caseClosed)
+		{
+			$this->caseReport = $caseReport;
+		}
+
+		return $this;
+	}
+
 	protected $caseSuspended = false;
 
 	function suspendCase() : self
