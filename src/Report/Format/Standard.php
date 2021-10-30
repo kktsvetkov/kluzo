@@ -28,6 +28,7 @@ final class Standard
 			'text'	=> Standard::class . '::formatText',
 			'raw'	=> Standard::class . '::formatRaw',
 			'html'	=> Standard::class . '::formatRaw',
+			'table'	=> Standard::class . '::formatTable',
 		));
 
 		return $aggregate;
@@ -118,5 +119,55 @@ final class Standard
 				 	?  '<br/>' . TraceKit::format( $trace )
 					: '' )
 			. '</blockquote>';
+	}
+
+	static function formatTable(Clue $clue) : string
+	{
+		$html = '';
+
+		foreach ($clue as $thing)
+		{
+			if (!is_iterable($thing))
+			{
+				$html .= '&#x23F5; '
+					. htmlentities( DumpKit::dump($thing) )
+					. "\n";
+
+				continue;
+			}
+
+			$columns = array();
+			foreach ($thing as $row)
+			{
+				$columns = array_merge($columns, $row);
+			}
+			$columns = array_keys($columns);
+
+			$html .= '<table border="01"><tr>';
+			foreach ($columns as $column)
+			{
+				$html .= '<th>' . htmlentities($column) . '</th>';
+			}
+
+			$html .= '</tr>';
+
+			foreach ($thing as $row)
+			{
+				$html .= '<tr>';
+				foreach ($columns as $column)
+				{
+					$html .= '<td>'
+						. htmlentities($row[ $column ] ?? '')
+						. '</td>';
+				}
+
+				$html .= '</tr>';
+			}
+
+			$html .= '</table>';
+
+		}
+
+		return $html;
 	}
 }
