@@ -2,6 +2,7 @@
 
 namespace Kluzo\Inspector;
 
+use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Clue\Evidence as EvidenceClue;
 use Kluzo\Clue\Testimony as TestimonyClue;
 use Kluzo\Inspector\DetectiveInspector;
@@ -100,5 +101,20 @@ class ChiefInspector extends DetectiveInspector
 	{
 		$this->log($pocketName, 'Pocked blocked')->formatAs('info');
 		return parent::blockPocket($pocketName);
+	}
+
+	function miss(string $pocketName, ...$things) : Clue
+	{
+		return $this->log($pocketName, ...$things)->miss();
+	}
+
+	function html(string $pocketName, ...$things) : Clue
+	{
+		return $this->log($pocketName, ...$things)->html();
+	}
+
+	function text(string $pocketName, ...$things) : Clue
+	{
+		return $this->log($pocketName, ...$things)->text();
 	}
 }

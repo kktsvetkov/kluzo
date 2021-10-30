@@ -41,19 +41,4 @@ class DetectiveInspector extends Inspector implements PocketStrategyFinder
 		$pocket->put( $clue = new TestimonyClue(...$things) );
 		return $clue;
 	}
-
-	function miss(string $pocketName, ...$things) : Clue
-	{
-		return $this->log($pocketName, ...$things)->miss();
-	}
-
-	function html(string $pocketName, ...$things) : Clue
-	{
-		return $this->log($pocketName, ...$things)->html();
-	}
-
-	function text(string $pocketName, ...$things) : Clue
-	{
-		return $this->log($pocketName, ...$things)->text();
-	}
 }
