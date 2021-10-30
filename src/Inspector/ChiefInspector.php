@@ -79,6 +79,11 @@ class ChiefInspector extends DetectiveInspector
 			return $this;
 		}
 
+		if (null === $pocket)
+		{
+			return $this;
+		}
+
 		$count = $pocket->count();
 		$pocket->clean();
 
