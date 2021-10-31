@@ -28,6 +28,7 @@ final class Standard
 			'raw'	=> Standard::class . '::formatRaw',
 			'html'	=> Standard::class . '::formatRaw',
 			'table'	=> Standard::class . '::formatTable',
+			'json'	=> Standard::class . '::formatJSON',
 		));
 
 		return $aggregate;
@@ -168,5 +169,28 @@ final class Standard
 		}
 
 		return $html;
+	}
+
+	static function formatJSON(Clue $clue) : string
+	{
+		// json_decode($string);
+		// return json_last_error() === JSON_ERROR_NONE;
+
+		$output = '';
+
+		foreach ($clue as $thing)
+		{
+			$decoded = json_decode( $thing );
+			$isJSON = json_last_error() !== JSON_ERROR_NONE;
+
+			$output .= '&#x23F5; '
+				. htmlentities(
+					json_encode(
+						$isJSON ? $decoded : $thing,
+						192
+				));
+		}
+
+		return $output;
 	}
 }
