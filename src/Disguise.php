@@ -4,6 +4,7 @@ namespace Kluzo;
 
 use Kluzo\Inspector\AbstractInspector as Inspector;
 use Kluzo\Inspector\ChiefInspector as DefaultInspector;
+use Kluzo\Tricks;
 
 use function strtolower;
 
@@ -29,26 +30,18 @@ final class Disguise
 			);
 	}
 
-	private const METHOD_ALIAS = array(
-		'ison' => 'isCaseActive',
-		'isoff' => 'isCaseSuspended',
-		'on' => 'resumeCase',
-		'off' => 'suspendCase',
-		'enable' => 'resumeCase',
-		'disable' => 'suspendCase',
-		'allow' => 'unblockPocket',
-		'ban' => 'blockPocket',
-		'clear' => 'cleanPocket',
-		'clean' => 'cleanPocket',
-	);
+	static private $tricks;
+
+	static function getTricks() : Tricks
+	{
+		return self::$tricks ?? (
+			self::$tricks = new Tricks(
+				self::getInspector()
+			));
+	}
 
 	static function __callStatic(string $method, array $args)
 	{
-		if ($alias = self::METHOD_ALIAS[ strtolower($method) ] ?? null)
-		{
-			$method = $alias;
-		}
-
-		return self::getInspector()->$method(...$args);
+		return (self::getTricks())->doTrick($method, $args);
 	}
 }

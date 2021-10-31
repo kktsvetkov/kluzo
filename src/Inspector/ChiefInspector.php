@@ -107,19 +107,4 @@ class ChiefInspector extends DetectiveInspector
 		$this->log($pocketName, 'Pocked blocked')->formatAs('info');
 		return parent::blockPocket($pocketName);
 	}
-
-	function miss(string $pocketName, ...$things) : Clue
-	{
-		return $this->log($pocketName, ...$things)->formatAs('miss');
-	}
-
-	function html(string $pocketName, ...$things) : Clue
-	{
-		return $this->log($pocketName, ...$things)->formatAs('html');
-	}
-
-	function text(string $pocketName, ...$things) : Clue
-	{
-		return $this->log($pocketName, ...$things)->formatAs('text');
-	}
 }
