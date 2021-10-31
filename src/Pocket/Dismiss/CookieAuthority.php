@@ -83,7 +83,7 @@ class CookieAuthority extends FixedAuthority
 				. (($pocketOn)
 					? ' checked="checked" '
 					: '')
-				. ' onChange="' . $functionName . '(this)" />'
+				. ' onChange="' . $functionName . '(this)" /> '
 				. $pocketId
 				. '</label>';
 		}
