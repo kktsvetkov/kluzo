@@ -1,3 +1,6 @@
+**NB!** KT: I am still fiddling with this, and it is not yet stable. In other words,
+the code, structure, classes and methods will likely change)
+
 # Kluzo PHP Debug Tool
 
 **Kluzo PHP Debug Tool** is the PHP debugging tool with a purpose: to help you
