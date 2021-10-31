@@ -3,14 +3,12 @@
 namespace Kluzo\Clue;
 
 use Kluzo\Clue\ClueInterface as Clue;
-use Kluzo\Clue\FormatTrait;
-use Kluzo\Clue\LabelTrait;
+use Kluzo\Clue\MetaTrait;
 use ArrayIterator;
 
 class Ignore implements Clue
 {
-	use FormatTrait;
-	use LabelTrait;
+	use MetaTrait;
 
 	function getIterator() : ArrayIterator
 	{
