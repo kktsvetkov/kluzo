@@ -1,33 +1,34 @@
 {
-        "name": "kktsvetkov/kluzo",
-        "type": "library",
-        "description": "Kluzo PHP Debug Bar - the PHP debugging tool that is always helping you prevent making stupid mistakes and causing accidents.",
-        "keywords": ["debug", "debugging", "debug-bar", "debugbar"],
-        "license": "LGPL-3.0",
-        "authors": [
-                {
-                    "name": "Kaloyan (KT) Tsvetkov",
-                    "email": "kaloyan@kaloyan.info"
-                }
-        ],
-
-        "require":
-	{
-                "php": ">=7.1"
-        },
-
-        "autoload":
-	{
-                "psr-4":
+	"name": "kktsvetkov/kluzo",
+	"type": "library",
+	"description": "Kluzo PHP Debug Bar - the PHP debugging tool that is always helping you prevent making stupid mistakes and causing accidents.",
+	"keywords": ["debug", "debugging", "debug-bar", "debugbar"],
+	"license": "LGPL-3.0",
+	"authors": [
 		{
-                    "Kluzo\\": "src/"
-                }
+		    "name": "Kaloyan (KT) Tsvetkov",
+		    "email": "kaloyan@kaloyan.info"
+		}
+	],
+
+	"require":
+	{
+		"php": ">=7.1"
 	},
 
-        "require-dev":
+	"autoload":
 	{
-                "phpunit/phpunit": "^9.5 | ^7.5"
-        },
+		"files": ["autoload.php"],
+		"psr-4":
+		{
+		    "Kluzo\\": "src/"
+	    	}
+	},
+
+	"require-dev":
+	{
+		"phpunit/phpunit": "^9.5 | ^7.5"
+	},
 
 	"autoload-dev":
 	{
@@ -35,5 +36,5 @@
 		{
 			"Kluzo\\Tests\\": "tests/"
 		}
-        }
+	}
 }
