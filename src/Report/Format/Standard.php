@@ -13,6 +13,7 @@ use Kluzo\Report\Format\Aggregate as FormatAggregate;
 use function current;
 use function htmlentities;
 use function is_string;
+use function json_encode;
 use function sprintf;
 
 final class Standard
@@ -185,9 +186,8 @@ final class Standard
 				? JsonKit::unJSON( $thing )
 				: $thing;
 
-			$output .= htmlentities(
-				json_encode( $subject, 192 )
-				) . "\n";
+			$output .= htmlentities( json_encode( $subject, 192 ) )
+				. ($index ? "\n" : '');
 		}
 
 		return $output;
@@ -196,17 +196,18 @@ final class Standard
 	static function formatUnJSON(Clue $clue) : string
 	{
 		$output = '';
-
-		foreach ($clue as $thing)
+		foreach ($clue as $index => $thing)
 		{
 			if (!is_string($thing))
 			{
-				$output .= DumpKit::dump($thing) . "\n";
+				$output .= DumpKit::dump($thing)
+					. ($index ? "\n" : '');
 				continue;
 			}
 
 			$subject = JsonKit::unJSON( $thing );
-			$output .= DumpKit::dump( $subject ) . "\n";
+			$output .= DumpKit::dump( $subject )
+				. ($index ? "\n" : '');
 		}
 
 		return $output;
@@ -215,17 +216,17 @@ final class Standard
 	static function formatXML(Clue $clue) : string
 	{
 		$output = '';
-		foreach ($clue as $xml)
+		foreach ($clue as $index => $xml)
 		{
 			if (!is_string( $xml ))
 			{
-				$output .= DumpKit::dump( $xml ) . "\n";
+				$output .= DumpKit::dump( $xml )
+					. ($index ? "\n" : '');
 				continue;
 			}
 
-			$output .= htmlentities(
-				XMLKit::formatXml( $xml )
-				) . "\n";
+			$output .= htmlentities( XMLKit::formatXml( $xml ) )
+				. ($index ? "\n" : '');
 		}
 
 		return $output;
