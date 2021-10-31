@@ -75,7 +75,7 @@ final class Tricks implements IteratorAggregate
 		yield from $this->tricks;
 	}
 
-	function doTrick(string $trickName, array $arguments)
+	function __call(string $trickName, array $arguments)
 	{
 		if (!$this->knownTrick($trickName))
 		{

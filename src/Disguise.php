@@ -42,6 +42,6 @@ final class Disguise
 
 	static function __callStatic(string $method, array $args)
 	{
-		return (self::getTricks())->doTrick($method, $args);
+		return (self::getTricks())->$method(...$args);
 	}
 }
