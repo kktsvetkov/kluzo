@@ -3,10 +3,8 @@
 namespace Kluzo\Inspector;
 
 use Kluzo\Clue\ClueInterface as Clue;
-
 use Kluzo\Pocket\Aggregate\AggregateInterface as PocketAggregate;
 use Kluzo\Pocket\Aggregate\DefaultAggregate as DefaultPocketAggregate;
-
 use Kluzo\Report\ReportInterface as CaseReport;
 use Kluzo\Report\LegacyLayout as DefaultReport;
 

@@ -4,9 +4,9 @@ namespace Kluzo\Pocket;
 
 use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Disguise as InspectorDisguise;
+use Kluzo\Kit\Pocket as PocketKit;
 use Kluzo\Pocket\Aggregate\AggregateInterface as PocketAggregate;
 use Kluzo\Pocket\Dismiss\AuthorityInterface as DismissAuthority;
-use Kluzo\Pocket\LockedPocket;
 use Kluzo\Report\ReportInterface as CaseReport;
 use Kluzo\Report\AbstractPrintReport as PrintReport;
 use Generator;
@@ -70,16 +70,7 @@ final class Dismiss implements CaseReport, Clue
 
 		// attach the settings pocket
 		//
-		if ($settingPocket = $pocketAggregate->getPocket('Settings'))
-		{
-			$settingsPocket->put($this);
-		} else
-		{
-			$pocketAggregate->addPocket(
-				'Settings',
-				new LockedPocket( $this )
-				);
-		}
+		PocketKit::getSettingsPocket($pocketAggregate)->put($this);
 
 		// collect all of the pocket names
 		//
