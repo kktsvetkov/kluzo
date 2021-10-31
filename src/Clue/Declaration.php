@@ -7,11 +7,6 @@ use Generator;
 
 class Declaration implements Clue
 {
-	function getMeta(string $metaName) : ?string
-	{
-		return null;
-	}
-
 	protected $declaration;
 
 	function __construct($declaration)
@@ -22,5 +17,15 @@ class Declaration implements Clue
 	function getIterator() : Generator
 	{
 		yield $this->declaration;
+	}
+
+	function getFormat() : ?string
+	{
+		return null;
+	}
+
+	function getLabel() : ?string
+	{
+		return null;
 	}
 }

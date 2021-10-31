@@ -5,5 +5,7 @@ use IteratorAggregate;
 
 interface ClueInterface extends IteratorAggregate
 {
-	function getMeta(string $metaName) : ?string;
+	function getFormat() : ?string;
+
+	function getLabel() : ?string;
 }

@@ -141,7 +141,7 @@ class LegacyLayout extends PrintReport
 				'</strong> ';
 		}
 
-		if ($suggestedFormat = $clue->getMeta('format') ?? '')
+		if ($suggestedFormat = $clue->getFormat() ?? '')
 		{
 			echo '<kbd class="clue-format">',
 				htmlentities($suggestedFormat),
@@ -304,6 +304,9 @@ class LegacyLayout extends PrintReport
 			'background:transparent;',
 			'border: 0;',
 			'padding: 0;',
+		'}',
+		'.kluzo-debug-bar > pre .clue table {',
+			'color: silver;',
 		'}',
 		'</style>';
 

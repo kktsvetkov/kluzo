@@ -21,9 +21,31 @@ trait MetaTrait
 		return $this;
 	}
 
+	function setLabel(string $label) : self
+	{
+		return $this->setMeta('label', $label);
+	}
+
+	function getLabel() : ?string
+	{
+		return $this->getMeta('label');
+	}
+
+	function label(string $label = null)
+	{
+		return (null !== $label)
+			? $this->setLabel($label)
+			: $this->getLabel();
+	}
+
 	function formatAs(string $format) : self
 	{
 		return $this->setMeta('format', $format);
+	}
+
+	function getFormat() : ?string
+	{
+		return $this->getMeta('format');
 	}
 
 	function miss() : self

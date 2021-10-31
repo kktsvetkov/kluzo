@@ -3,18 +3,17 @@
 namespace Kluzo\Pocket;
 
 use Kluzo\Clue\ClueInterface as Clue;
-use Kluzo\Clue\LabeledClueInterface as LabeledClue;
-use Kluzo\Pocket\Dismiss\AuthorityInterface as DismissAuthority;
 use Kluzo\Disguise as InspectorDisguise;
-use Kluzo\Pocket\LockedPocket;
 use Kluzo\Pocket\Aggregate\AggregateInterface as PocketAggregate;
+use Kluzo\Pocket\Dismiss\AuthorityInterface as DismissAuthority;
+use Kluzo\Pocket\LockedPocket;
 use Kluzo\Report\ReportInterface as CaseReport;
 use Kluzo\Report\AbstractPrintReport as PrintReport;
 use Generator;
 
 use function htmlentities;
 
-final class Dismiss implements CaseReport, Clue, LabeledClue
+final class Dismiss implements CaseReport, Clue
 {
 	static function setup(DismissAuthority $authority) : self
 	{
@@ -111,18 +110,8 @@ final class Dismiss implements CaseReport, Clue, LabeledClue
 		return 'Dismissed Pockets';
 	}
 
-	function setLabel(string $label) : self
+	function getFormat() : ?string
 	{
-		return $this;
-	}
-
-	function getMeta(string $metaName) : ?string
-	{
-		if ('format' === $metaName)
-		{
-			return 'dismiss';
-		}
-
-		return null;
+		return 'dismiss';
 	}
 }
