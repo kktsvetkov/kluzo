@@ -3,7 +3,7 @@
 namespace Kluzo\Clue;
 
 use Kluzo\Clue\ClueInterface as Clue;
-use Kluzo\Clue\Evidence as EvidenceClue;
+use Kluzo\Clue\Declaration as DeclarationClue;
 use Kluzo\Clue\MetaTrait;
 use Kluzo\Kit\Trace as TraceKit;
 use Exception;
@@ -20,12 +20,11 @@ class Testimony extends Exception implements Clue
 		$this->things = $things;
 	}
 
-	function getTraceAsClue() : EvidenceClue
+	function getTraceAsClue() : DeclarationClue
 	{
-		return new EvidenceClue(function()
-		{
-			return TraceKit::unjunk( $this->getTrace() );
-		});
+		return new DeclarationClue(
+			TraceKit::unjunk( $this->getTrace() )
+			);
 	}
 
 	function getIterator() : Generator

@@ -9,7 +9,6 @@ use Kluzo\Kit\Trace as TraceKit;
 use Kluzo\Report\Format\Aggregate as FormatAggregate;
 
 use function current;
-use function iterator_to_array;
 use function htmlentities;
 use function sprintf;
 
@@ -108,8 +107,8 @@ final class Standard
 
 	static function formatCaller(Clue $clue) : string
 	{
-		$trace = iterator_to_array( $clue );
-		$caller = current($trace);
+		$trace = current( $clue );
+		$caller = current( $trace );
 
 		return  '<blockquote class="caller">'
 				. 'Called at <u>'
