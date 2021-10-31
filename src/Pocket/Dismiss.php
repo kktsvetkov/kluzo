@@ -3,6 +3,7 @@
 namespace Kluzo\Pocket;
 
 use Kluzo\Clue\ClueInterface as Clue;
+use Kluzo\Clue\LabeledClueInterface as LabeledClue;
 use Kluzo\Pocket\Dismiss\AuthorityInterface as DismissAuthority;
 use Kluzo\Disguise as InspectorDisguise;
 use Kluzo\Pocket\LockedPocket;
@@ -13,7 +14,7 @@ use Generator;
 
 use function htmlentities;
 
-final class Dismiss implements CaseReport, Clue
+final class Dismiss implements CaseReport, Clue, LabeledClue
 {
 	static function setup(DismissAuthority $authority) : self
 	{
@@ -108,6 +109,11 @@ final class Dismiss implements CaseReport, Clue
 	function getLabel() : string
 	{
 		return 'Dismissed Pockets';
+	}
+
+	function setLabel(string $label) : self
+	{
+		return $this;
 	}
 
 	function getMeta(string $metaName) : ?string

@@ -4,6 +4,7 @@ namespace Kluzo\Clue;
 
 use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Clue\Declaration as DeclarationClue;
+use Kluzo\Clue\LabeledClueTrait;
 use Kluzo\Clue\MetaTrait;
 use Kluzo\Kit\Trace as TraceKit;
 use Exception;
@@ -12,6 +13,7 @@ use Generator;
 class Testimony extends Exception implements Clue
 {
 	use MetaTrait;
+	use LabeledClueTrait;
 
 	protected $things = array();
 

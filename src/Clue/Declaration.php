@@ -7,11 +7,6 @@ use Generator;
 
 class Declaration implements Clue
 {
-	function getLabel() : string
-	{
-		return '';
-	}
-
 	function getMeta(string $metaName) : ?string
 	{
 		return null;
