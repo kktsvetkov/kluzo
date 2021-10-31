@@ -86,6 +86,7 @@ class LegacyLayout extends PrintReport
 			mt_srand();
 			shuffle($colors);
 		}
+
 		if (false === next($colors))
 		{
 			reset($colors);
