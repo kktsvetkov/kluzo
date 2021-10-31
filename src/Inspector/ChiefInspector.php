@@ -110,16 +110,16 @@ class ChiefInspector extends DetectiveInspector
 
 	function miss(string $pocketName, ...$things) : Clue
 	{
-		return $this->log($pocketName, ...$things)->miss();
+		return $this->log($pocketName, ...$things)->formatAs('miss');
 	}
 
 	function html(string $pocketName, ...$things) : Clue
 	{
-		return $this->log($pocketName, ...$things)->html();
+		return $this->log($pocketName, ...$things)->formatAs('html');
 	}
 
 	function text(string $pocketName, ...$things) : Clue
 	{
-		return $this->log($pocketName, ...$things)->text();
+		return $this->log($pocketName, ...$things)->formatAs('text');
 	}
 }

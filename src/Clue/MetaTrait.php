@@ -47,19 +47,4 @@ trait MetaTrait
 	{
 		return $this->getMeta('format');
 	}
-
-	function miss() : self
-	{
-		return $this->formatAs('miss');
-	}
-
-	function text() : self
-	{
-		return $this->formatAs('text');
-	}
-
-	function html() : self
-	{
-		return $this->formatAs('html');
-	}
 }
