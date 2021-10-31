@@ -38,5 +38,4 @@ class Dump
 		var_dump($thing);
 		return ob_get_clean();
 	}
-
 }

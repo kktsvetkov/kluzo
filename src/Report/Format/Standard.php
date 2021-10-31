@@ -5,11 +5,14 @@ namespace Kluzo\Report\Format;
 use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Clue\Testimony as TestimonyClue;
 use Kluzo\Kit\Dump as DumpKit;
+use Kluzo\Kit\JSON as JsonKit;
 use Kluzo\Kit\Trace as TraceKit;
+use Kluzo\Kit\XML as XMLKit;
 use Kluzo\Report\Format\Aggregate as FormatAggregate;
 
 use function current;
 use function htmlentities;
+use function is_string;
 use function sprintf;
 
 final class Standard
@@ -28,7 +31,10 @@ final class Standard
 			'raw'	=> Standard::class . '::formatRaw',
 			'html'	=> Standard::class . '::formatRaw',
 			'table'	=> Standard::class . '::formatTable',
-			'json'	=> Standard::class . '::formatJSON',
+			'json'	=> Standard::class . '::formatToJSON',
+			'unjson' => Standard::class . '::formatUnJSON',
+			'dejson' => Standard::class . '::formatUnJSON',
+			'xml'	=> Standard::class . '::formatXML',
 		));
 
 		return $aggregate;
@@ -165,30 +171,61 @@ final class Standard
 			}
 
 			$html .= '</table>';
-
 		}
 
 		return $html;
 	}
 
-	static function formatJSON(Clue $clue) : string
+	static function formatToJSON(Clue $clue) : string
 	{
-		// json_decode($string);
-		// return json_last_error() === JSON_ERROR_NONE;
+		$output = '';
+		foreach ($clue as $thing)
+		{
+			$subject = is_string($thing)
+				? JsonKit::unJSON( $thing )
+				: $thing;
 
+			$output .= htmlentities(
+				json_encode( $subject, 192 )
+				) . "\n";
+		}
+
+		return $output;
+	}
+
+	static function formatUnJSON(Clue $clue) : string
+	{
 		$output = '';
 
 		foreach ($clue as $thing)
 		{
-			$decoded = json_decode( $thing );
-			$isJSON = json_last_error() !== JSON_ERROR_NONE;
+			if (!is_string($thing))
+			{
+				$output .= DumpKit::dump($thing) . "\n";
+				continue;
+			}
 
-			$output .= '&#x23F5; '
-				. htmlentities(
-					json_encode(
-						$isJSON ? $decoded : $thing,
-						192
-				));
+			$subject = JsonKit::unJSON( $thing );
+			$output .= DumpKit::dump( $subject ) . "\n";
+		}
+
+		return $output;
+	}
+
+	static function formatXML(Clue $clue) : string
+	{
+		$output = '';
+		foreach ($clue as $xml)
+		{
+			if (!is_string( $xml ))
+			{
+				$output .= DumpKit::dump( $xml ) . "\n";
+				continue;
+			}
+
+			$output .= htmlentities(
+				XMLKit::formatXml( $xml )
+				) . "\n";
 		}
 
 		return $output;
