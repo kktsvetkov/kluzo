@@ -2,6 +2,7 @@
 
 namespace Kluzo\Inspector;
 
+use Kluzo\Clue\ClueInterface as Clue;
 use Kluzo\Clue\Ignore as IgnoreClue;
 use Kluzo\Inspector\AbstractInspector as Inspector;
 
@@ -44,7 +45,7 @@ class ImposterInspector extends Inspector
 
 	function __destruct()
 	{
-		// do nothing, no report issued 
+		// do nothing, no report issued
 	}
 
 	function log(string $pocketName, ...$things) : Clue
