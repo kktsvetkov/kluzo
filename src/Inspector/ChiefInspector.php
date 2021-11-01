@@ -68,7 +68,6 @@ class ChiefInspector extends DetectiveInspector
 		));
 	}
 
-
 	function cleanPocket(string $pocketName) : self
 	{
 		$pocket = $this->getPockets()->getPocket($pocketName);

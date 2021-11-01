@@ -4,6 +4,7 @@ namespace Kluzo;
 
 use Kluzo\Inspector\AbstractInspector as Inspector;
 use Kluzo\Inspector\ChiefInspector as DefaultInspector;
+use Kluzo\Inspector\ImposterInspector;
 use Kluzo\Tricks;
 
 use function strtolower;
@@ -16,8 +17,7 @@ final class Disguise
 	{
 		if (self::$inspector)
 		{
-			self::$inspector->closeCase();
-			unset(self::$inspector);
+			self::$inspector->suspendCase();
 		}
 
 		return self::$inspector = $inspector;
@@ -43,5 +43,12 @@ final class Disguise
 	static function __callStatic(string $method, array $args)
 	{
 		return (self::getTricks())->$method(...$args);
+	}
+
+	static function mute() : Inspector
+	{
+		return self::setInspector(
+			new ImposterInspector
+			);
 	}
 }
